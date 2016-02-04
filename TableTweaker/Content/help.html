@@ -1,0 +1,84 @@
+﻿<html>
+<head>
+    <title>TableTweaker</title>
+    <meta http-equiv='Content-Type' content='Type=text/html; charset=utf-8'>
+    <style>
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            font-weight: 300;
+        }
+        p, a, ul, ol, li {
+            font-family: "Helvetica Neue", Helvetica, "Lucida Grande", sans-serif;
+        }
+        code {
+            font-family: Monaco;
+        }
+    </style>
+</head>
+<body>
+    <h1>TableTweaker</h1>
+    (&copy;2015 Michael Heitland)
+    <p>
+        TableTweaker is a mighty tool to manipulate any text that has a table structure.
+        <br />
+        Copy and paste your table into the input field (bottom left window), use a regex to filter which input lines shall be processed, describe the transformation in the pattern field (top window)
+        and check the transformed text in the output field (bottom right window).
+        The output can be copied into any other program for further processing.
+        <br />
+        The highlight: you can use any scripted C# method you like. This program comes with a code editor supporting syntax highlighting and Intellisense to help you coding! The code gets compiled on the fly.
+        <br />
+        <h2>Initial Example: Mailing everyone from your contact list that an accident has happened</h2>
+        <br />
+        <h2>Keywords</h2>
+        $dollar;: "$" (dollar sign)
+        <br />
+        $h0, $h1, ...: fields from the header row (i.e. first line of your input; index is 0-based)
+        <br />
+        $h-0, $h-1, ...: fields from the header row (right-most field has index -0, the next one -1 etc.)
+        <br />
+        $0, $1, ...: row fields (0-based)
+        <br />
+        $-0, $-1, ...: row fields (right-most field has index -0, the next one -1 etc.)
+        <br />
+        $header: first row
+        <br />
+        $row: current row
+        <br />
+        $rowNum: row number (0-based)
+        <br />
+        $rowNumOne: row number (1-based)
+        <br />
+        $numFields: number of fields per row
+        <br />
+        $numRows: total number of rows in the input field
+        <br />
+        $MyMethod("$0",$1,$row, 7, "some text", ...): call any C# method from your code window. If you use ")" within your args, pick another set of brackets instead of "(" and ")", e.g. [], <> or {}.
+        <br />
+        <h2>Section markers</h2>
+        $ONCE: apply the pattern only once
+        <br />
+        $EACH: apply the pattern for every single row of the input field
+        <br />
+        $EACH+: apply the pattern for every single row of the input field, but skip the first row (i.e. header line)
+        <br />
+        <h2>Prebuilt Functions</h2>
+        FormatDate: use a format string to describe how you want to have your dates displayed
+        <br />
+        IndexOf: searches for a pattern and returns its index within the string or -1 if not found
+        <br />
+        Left: returns the "n" left-most characters
+        <br />
+        Right: returns the "n" right-most characters
+        <br />
+        Replace: replace a substring with another substring
+        <br />
+        Substring: returns a substring 
+        <br />
+        ToLower: converts a string to lower case
+        <br />
+        ToUpper: converts a string to upper case
+        <br />
+        Trim: removes leading and trailing characters 
+    </p>
+</body>
+</html>

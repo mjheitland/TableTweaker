@@ -1,0 +1,7 @@
+- store config
+- store everything something else so it does not get lost if bin gets rebuild
+- add toggle button for line break for Text window
+- allow turning off field qualifiers
+- show alternate rows (e.g. using a web view as a second view)
+- allow " in code parameters, e.g. 	using System;
+    Replace("[{"group":"CURRENT", products:[""]},{"group":"LOAN", products:[""]},{"group":"TERM_DEPOSIT", products:[""]}]", "\"", "\\\"");

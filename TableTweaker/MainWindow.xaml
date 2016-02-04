@@ -1,0 +1,270 @@
+﻿<Window x:Class="TableTweaker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:editor="clr-namespace:TableTweaker.Editor"
+        FontSize="12"
+        Icon="Content/Logo.png"
+        Title="TableTweaker" 
+        WindowState="Maximized"
+        Loaded="MainWindow_OnLoaded">
+
+    <Window.Resources>
+        <Style x:Key="ParagraphWithNoMarginStyle" TargetType="{x:Type Paragraph}">
+            <Setter Property="Margin" Value="0" />
+        </Style>
+    </Window.Resources>
+
+    <FrameworkElement.CommandBindings>
+        <CommandBinding Command="Play" Executed="OnPlayCommand" />
+    </FrameworkElement.CommandBindings>
+
+    <FrameworkElement.InputBindings>
+        <KeyBinding Key="F5" Command="Play" />
+    </FrameworkElement.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <Button x:Name="BtnRun" Click="BtnRun_Click">Run (F5)</Button>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Mode</TextBlock>
+            <ComboBox x:Name="CbxMode" MinWidth="60" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxMode_SelectionChanged">
+                <ComboBoxItem>Auto</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">Manual</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Delimiter</TextBlock>
+            <ComboBox x:Name="CbxDelimiter" MinWidth="30" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxDelimiter_SelectionChanged">
+                <ComboBoxItem IsSelected="True">,</ComboBoxItem>
+                <ComboBoxItem>;</ComboBoxItem>
+                <ComboBoxItem>:</ComboBoxItem>
+                <ComboBoxItem>|</ComboBoxItem>
+                <ComboBoxItem>TAB</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Macros</TextBlock>
+            <ComboBox x:Name="CbxMacros" MinWidth="100" SelectedValuePath="Content" ToolTip="Macros" SelectionChanged="CbxMacros_SelectionChanged">
+                <ComboBoxItem>$dollar;</ComboBoxItem>
+                <ComboBoxItem>$header</ComboBoxItem>
+                <ComboBoxItem>$rowNumOne</ComboBoxItem>
+                <ComboBoxItem>$rowNum</ComboBoxItem>
+                <ComboBoxItem>$row</ComboBoxItem>
+                <ComboBoxItem>$numFields</ComboBoxItem>
+                <ComboBoxItem>$numRows</ComboBoxItem>
+                <ComboBoxItem>$ONCE</ComboBoxItem>
+                <ComboBoxItem>$EACH</ComboBoxItem>
+                <ComboBoxItem>$EACH+</ComboBoxItem>
+                <ComboBoxItem>$h0</ComboBoxItem>
+                <ComboBoxItem>$h1</ComboBoxItem>
+                <ComboBoxItem>$h2</ComboBoxItem>
+                <ComboBoxItem>$h3</ComboBoxItem>
+                <ComboBoxItem>$h4</ComboBoxItem>
+                <ComboBoxItem>$h-0</ComboBoxItem>
+                <ComboBoxItem>$h-1</ComboBoxItem>
+                <ComboBoxItem>$h-2</ComboBoxItem>
+                <ComboBoxItem>$h-3</ComboBoxItem>
+                <ComboBoxItem>$h-4</ComboBoxItem>
+                <ComboBoxItem>$0</ComboBoxItem>
+                <ComboBoxItem>$1</ComboBoxItem>
+                <ComboBoxItem>$2</ComboBoxItem>
+                <ComboBoxItem>$3</ComboBoxItem>
+                <ComboBoxItem>$4</ComboBoxItem>
+                <ComboBoxItem>$-0</ComboBoxItem>
+                <ComboBoxItem>$-1</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Methods</TextBlock>
+            <ComboBox x:Name="CbxMethods" MinWidth="100" SelectedValuePath="Content" ToolTip="Methods" SelectionChanged="CbxMethods_SelectionChanged">
+                <ComboBoxItem>$FormatDate("$0","D")</ComboBoxItem>
+                <ComboBoxItem>$IndexOf("$0","a")</ComboBoxItem>
+                <ComboBoxItem>$Left("$0", 1)</ComboBoxItem>
+                <ComboBoxItem>$Right("$0", 2)</ComboBoxItem>
+                <ComboBoxItem>$Replace("$0", "x", "y")</ComboBoxItem>
+                <ComboBoxItem>$Substring("$0",1,2)</ComboBoxItem>
+                <ComboBoxItem>$ToLower("$0")</ComboBoxItem>
+                <ComboBoxItem>$ToUpper("$0")</ComboBoxItem>
+                <ComboBoxItem>$Trim("$0"," ")</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Filter</TextBlock>
+            <ComboBox x:Name="CbxFilters" MinWidth="150" SelectedValuePath="Content" ToolTip="Regex to filter input rows" SelectionChanged="CbxMethods_SelectionChanged" IsEditable="True">
+                <ComboBoxItem IsSelected="True">.*</ComboBoxItem>
+                <ComboBoxItem>.+</ComboBoxItem>
+            </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Font</TextBlock>
+            <ComboBox x:Name="CbxFontSize" MinWidth="20" SelectedValuePath="Content" ToolTip="Font size" SelectionChanged="CbxFontSize_SelectionChanged" IsEditable="True">
+                <ComboBoxItem>8</ComboBoxItem>
+                <ComboBoxItem>9</ComboBoxItem>
+                <ComboBoxItem>10</ComboBoxItem>
+                <ComboBoxItem>11</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">12</ComboBoxItem>
+                <ComboBoxItem>13</ComboBoxItem>
+                <ComboBoxItem>14</ComboBoxItem>
+                <ComboBoxItem>15</ComboBoxItem>
+                <ComboBoxItem>16</ComboBoxItem>
+                <ComboBoxItem>18</ComboBoxItem>
+                <ComboBoxItem>20</ComboBoxItem>
+                <ComboBoxItem>24</ComboBoxItem>
+                <ComboBoxItem>28</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+        
+        <TabControl x:Name="TbcMain" Grid.Row="1" SelectionChanged="TbcMain_SelectionChanged">
+            <TabItem Header="Text">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="5" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock>Pattern</TextBlock>
+
+                        <RichTextBox 
+                            x:Name="TbxPattern" 
+                            Grid.Row="1" 
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Stretch" 
+                            Margin="10" 
+                            AcceptsTab="True"
+                            TextChanged="TbxPattern_TextChanged">
+                            <FlowDocument>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    $EACH+
+                                </Paragraph>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    $rowNum
+                                </Paragraph>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    To: $1.$0@$2.com
+                                </Paragraph>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    Hello $1 $0,
+                                </Paragraph>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    I'm sorry to inform you of a terrible accident at $2.
+                                </Paragraph>
+                                <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                    ---
+                                </Paragraph>
+                            </FlowDocument>
+                        </RichTextBox>
+                    </Grid>
+
+                    <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" />
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock>Input</TextBlock>
+
+                            <RichTextBox 
+                                x:Name="TbxInput" 
+                                Grid.Row="1" 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Margin="10" 
+                                AcceptsTab="True"
+                                TextChanged="TbxInput_TextChanged">
+                                <FlowDocument>
+                                    <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                        Last Name,First Name,Company
+                                    </Paragraph>
+                                    <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                        Jobs,Steve,Apple
+                                    </Paragraph>
+                                    <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                        Cook,Tim,Apple
+                                    </Paragraph>
+                                    <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
+                                        Gates,Bill,Microsoft
+                                    </Paragraph>
+                                </FlowDocument>
+                            </RichTextBox>
+                        </Grid>
+
+                        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" />
+
+                        <Grid Grid.Column="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock>Output</TextBlock>
+
+                            <RichTextBox 
+                                x:Name="TbxOutput" 
+                                Grid.Row="1" 
+                                IsReadOnly="False" 
+                                AcceptsTab="True"
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Margin="10">
+                                <FlowDocument />
+                            </RichTextBox>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            
+            <TabItem Header="Code">
+                <DockPanel>
+                    <StatusBar DockPanel.Dock="Bottom">
+                        <StatusBarItem>
+                            <TextBlock DataContext="{Binding ElementName=Editor, Path=TextArea.Caret.Position}">
+                                Ln <Run Text="{Binding Line}" /> 
+                                Col <Run Text="{Binding Column}" />
+                            </TextBlock>
+                        </StatusBarItem>
+                    </StatusBar>
+
+                    <Grid>
+                        <!--<Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <ToolBar>
+                            <Button Content="Check" Command="Play" />
+                        </ToolBar>-->
+
+                        <editor:CodeTextEditor x:Name="Editor" x:FieldModifier="private" />
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
+            
+            <TabItem Header="Help">
+                <WebBrowser x:Name="WebBrowser"/>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <TextBlock x:Name="TblMessage" Margin="10,5,0,5">3 input rows, 6 output rows</TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

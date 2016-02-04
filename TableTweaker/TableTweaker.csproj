@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B0AFEB5B-BB2A-477D-B7E5-ECF94A88222F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TableTweaker</RootNamespace>
+    <AssemblyName>TableTweaker</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Win32Resource>
+    </Win32Resource>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\AvalonEdit\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Analyzers, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Analyzers.Setup, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.Setup.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Desktop, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Features, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.FxCopAnalyzers, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.FxCopAnalyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces.Desktop, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Desktop, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.EditorFeatures.Minimal, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Minimal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.EditorFeatures.Text, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Features, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Features.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.FxCopAnalyzers, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.FxCopAnalyzers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Scripting, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Scripting.CSharp, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Scripting.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.1.33.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Composition.TypedParts.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Reflection.Metadata, Version=1.0.18.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RoslynPad\lib\Roslyn\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Roslyn\InteractiveManager.cs" />
+    <Compile Include="Roslyn\InteractiveWorkspace.cs" />
+    <Compile Include="Runtime\ObjectExtensions.cs" />
+    <Compile Include="Utilities\ReferenceEqualityComparer.cs" />
+    <Compile Include="Utilities\WaitCursor.cs" />
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Editor\AvalonEditCompletionData.cs" />
+    <Compile Include="Editor\AvalonEditText.cs" />
+    <Compile Include="Editor\AvalonEditTextContainer.cs" />
+    <Compile Include="Editor\CodeTextEditor.cs" />
+    <Compile Include="Editor\CompletionResult.cs" />
+    <Compile Include="Editor\EditorExtensions.cs" />
+    <Compile Include="Editor\ICodeEditorCompletionProvider.cs" />
+    <Compile Include="Editor\ICompletionDataEx.cs" />
+    <Compile Include="Editor\RoslynCodeEditorCompletionProvider.cs" />
+    <Compile Include="Formatting\ObjectFormatter.cs" />
+    <Compile Include="Formatting\SymbolDisplayPartExtensions.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Content\TableTweaker.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\TableTweaker.pptx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Content\CodeWindow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Content\HelpWindow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Content\Logo.png" />
+    <Resource Include="Content\TextWindow.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="Content\help.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\AvalonEdit\ICSharpCode.AvalonEdit.dll" />
+    <Content Include="Lib\AvalonEdit\ICSharpCode.AvalonEdit.pdb" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.dll" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.Setup.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.Setup.xml" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Analyzers.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Analyzers.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Desktop.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Desktop.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.dll" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Features.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Features.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.FxCopAnalyzers.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.FxCopAnalyzers.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.Desktop.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.Desktop.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.Workspaces.xml" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.CSharp.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Desktop.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Desktop.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.dll" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Minimal.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Minimal.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Text.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.EditorFeatures.Text.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Features.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Features.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.FxCopAnalyzers.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.FxCopAnalyzers.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Scripting.CSharp.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Scripting.CSharp.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Scripting.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Scripting.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.Desktop.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.Desktop.xml" />
+    <Content Include="Lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.dll" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.Workspaces.xml" />
+    <Resource Include="Lib\Roslyn\Microsoft.CodeAnalysis.xml" />
+    <Content Include="Lib\Roslyn\System.Collections.Immutable.dll" />
+    <Resource Include="Lib\Roslyn\System.Collections.Immutable.xml" />
+    <Content Include="Lib\Roslyn\System.Composition.AttributedModel.dll" />
+    <Resource Include="Lib\Roslyn\System.Composition.AttributedModel.xml" />
+    <Content Include="Lib\Roslyn\System.Composition.Convention.dll" />
+    <Resource Include="Lib\Roslyn\System.Composition.Convention.xml" />
+    <Content Include="Lib\Roslyn\System.Composition.Hosting.dll" />
+    <Resource Include="Lib\Roslyn\System.Composition.Hosting.xml" />
+    <Content Include="Lib\Roslyn\System.Composition.Runtime.dll" />
+    <Resource Include="Lib\Roslyn\System.Composition.Runtime.xml" />
+    <Content Include="Lib\Roslyn\System.Composition.TypedParts.dll" />
+    <Resource Include="Lib\Roslyn\System.Composition.TypedParts.xml" />
+    <Content Include="Lib\Roslyn\System.Reflection.Metadata.dll" />
+    <Resource Include="Lib\Roslyn\System.Reflection.Metadata.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TableTweaker.Model\TableTweaker.Model.csproj">
+      <Project>{6107d38d-21f2-4476-8c1e-1b6bd021f700}</Project>
+      <Name>TableTweaker.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

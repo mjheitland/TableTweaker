@@ -1,0 +1,25 @@
+﻿1
+To: tim.cook@apple.com
+Hello Tim Cook,
+I'm sorry to inform you of a terrible accident at Apple.
+---
+2
+To: satya.nadella@microsoft.com
+Hello Satya Nadella,
+I'm sorry to inform you of a terrible accident at Microsoft.
+---
+3
+To: rod.drury@xero.com
+Hello Rod Drury,
+I'm sorry to inform you of a terrible accident at Xero.
+---
+4
+To: mark.zuckerberg@facebook.com
+Hello Mark Zuckerberg,
+I'm sorry to inform you of a terrible accident at Facebook.
+---
+5
+To: larry.page@google.com
+Hello Larry Page,
+I'm sorry to inform you of a terrible accident at Google.
+---
