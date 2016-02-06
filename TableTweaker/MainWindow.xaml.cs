@@ -140,7 +140,7 @@ namespace TableTweaker
 
                     var input =
                         new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text.Replace("\r", "");
-                    var table = new Table(input, _engine.FieldDelimiter, filter);
+                    var table = new Table(input, _engine.FieldDelimiter, _engine.QuotedFields, filter);
 
                     var pattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
 
@@ -329,6 +329,15 @@ namespace TableTweaker
                 return;
 
             _engine.FieldDelimiter = delimiter[0];
+            Process();
+        }
+
+        private void CbxQualifier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return; // called during initialization!
+
+            _engine.QuotedFields = CbxDelimiter.SelectedValue.ToString() == "\"";
             Process();
         }
 

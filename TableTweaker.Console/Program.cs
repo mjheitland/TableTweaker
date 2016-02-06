@@ -11,19 +11,21 @@ namespace TableTweaker.Console
         {
             try
             {
-                if (args.Length != 6)
-                    throw new Exception("Usage: TableTweaker.Console <inputFile> <fieldDelimitter> <filter> <patternFile> <codeFile> <outputPath>");
+                if (args.Length != 7)
+                    throw new Exception("Usage: TableTweaker.Console <inputFile> <fieldDelimitter> [quotedFields | unquotedFields] <filter> <patternFile> <codeFile> <outputPath>");
 
                 var input = File.ReadAllText(args[0]);
                 var fieldDelimiter = string.IsNullOrEmpty(args[1]) ? ',' : args[1][0];
-                var filter = string.IsNullOrEmpty(args[2]) ? ".*" : args[2];
-                var pattern = string.IsNullOrEmpty(args[3]) ? "" : File.ReadAllText(args[3]);
-                var code = string.IsNullOrEmpty(args[4]) ? "" : File.ReadAllText(args[4]);
-                var outputPath = args[5];
+                var quotedFields = args[2] == "quotedFields";
+                var filter = string.IsNullOrEmpty(args[3]) ? ".*" : args[2];
+                var pattern = string.IsNullOrEmpty(args[4]) ? "" : File.ReadAllText(args[3]);
+                var code = string.IsNullOrEmpty(args[5]) ? "" : File.ReadAllText(args[4]);
+                var outputPath = args[6];
 
                 var engine = Engine.Instance;
                 engine.FieldDelimiter = fieldDelimiter;
-                var table = new Table(input, engine.FieldDelimiter, filter);
+                engine.QuotedFields = quotedFields;
+                var table = new Table(input, engine.FieldDelimiter, engine.QuotedFields, filter);
 
                 var stopwatch = new Stopwatch();
                 stopwatch.Reset();

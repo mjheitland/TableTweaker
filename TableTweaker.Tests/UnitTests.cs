@@ -10,13 +10,21 @@ namespace TableTweaker.Tests
 
         private const char CommaFieldDelimitter = ',';
 
-	    private const string MyCode = "public static string GetInitial(string s) { return s.Substring(0,1); }";
+        private const bool QuotedFields = false;
+
+        private const string MyCode = "public static string GetInitial(string s) { return s.Substring(0,1); }";
 
         private const string HeaderAndThreeRowsInput = 
             "Last Name,First Name,Company\r\n" +
             "Jobs,Steve,Apple\r\n" +
             "Cook,Tim,Apple\r\n" +
             "Gates,Bill,Microsoft\r\n";
+
+        private const string HeaderAndThreeRowsInputWithQuotedFields =
+            "\"Last Name\",\"First Name\",\"Company\"\r\n" +
+            "\"Jobs\",\"Steve\",\"Apple\"\r\n" +
+            "\"Cook\",\"Tim\",\"Apple\"\r\n" +
+            "\"Gates\",\"William \"\"Bill\"\"\",\"Microsoft\"\r\n";
 
         private const string CopyPattern =
             "$0,$1,$2\r\n";
@@ -248,7 +256,7 @@ namespace TableTweaker.Tests
                 ""
             };
 
-            var csvStringConverter = new CsvStringConverter(';');
+            var csvStringConverter = new CsvStringConverter(';', true);
             var startIndex = 0;
             var sentinelIndex = input.Length;
             var output = new List<string>();
@@ -276,7 +284,7 @@ namespace TableTweaker.Tests
         [Trait("Category", "Table")]
         public void TableTest()
         {
-            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, ".*");
+            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, QuotedFields, ".*");
             
             Assert.NotNull(table);
             Assert.Equal(3, table.NumFields);
@@ -310,6 +318,44 @@ namespace TableTweaker.Tests
             Assert.Equal("Microsoft", table.RowFields[3][2]);
         }
 
+        [Fact]
+        [Trait("Category", "Table")]
+        public void TableTestWithQuotedFields()
+        {
+            var table = new Table(HeaderAndThreeRowsInputWithQuotedFields, CommaFieldDelimitter, true, ".*");
+
+            Assert.NotNull(table);
+            Assert.Equal(3, table.NumFields);
+            Assert.Equal(4, table.NumRows);
+
+            Assert.Equal("Last Name,First Name,Company", table.Header);
+
+            Assert.Equal("Last Name,First Name,Company", table.Rows[0]);
+            Assert.Equal("Jobs,Steve,Apple", table.Rows[1]);
+            Assert.Equal("Cook,Tim,Apple", table.Rows[2]);
+            Assert.Equal("Gates,William \"Bill\",Microsoft", table.Rows[3]);
+
+            Assert.Equal("Last Name", table.HeaderFields[0]);
+            Assert.Equal("First Name", table.HeaderFields[1]);
+            Assert.Equal("Company", table.HeaderFields[2]);
+
+            Assert.Equal("Last Name", table.RowFields[0][0]);
+            Assert.Equal("First Name", table.RowFields[0][1]);
+            Assert.Equal("Company", table.RowFields[0][2]);
+
+            Assert.Equal("Jobs", table.RowFields[1][0]);
+            Assert.Equal("Steve", table.RowFields[1][1]);
+            Assert.Equal("Apple", table.RowFields[1][2]);
+
+            Assert.Equal("Cook", table.RowFields[2][0]);
+            Assert.Equal("Tim", table.RowFields[2][1]);
+            Assert.Equal("Apple", table.RowFields[2][2]);
+
+            Assert.Equal("Gates", table.RowFields[3][0]);
+            Assert.Equal("William \"Bill\"", table.RowFields[3][1]);
+            Assert.Equal("Microsoft", table.RowFields[3][2]);
+        }
+
         #endregion TableTests
 
         #region EngineTests
@@ -320,7 +366,7 @@ namespace TableTweaker.Tests
         {
             var engine = Engine.Instance;
             var input = "\r\n";
-            var table = new Table(input, CommaFieldDelimitter, "");
+            var table = new Table(input, CommaFieldDelimitter, QuotedFields, "");
             var output = engine.Process(table, "", "");
             Assert.Equal(input, output);
         }
@@ -330,7 +376,7 @@ namespace TableTweaker.Tests
         public void NoRulesEngineTest()
         {
             var engine = Engine.Instance;
-            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, "");
+            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, QuotedFields, "");
             var output = engine.Process(table, "", "");
             Assert.Equal(HeaderAndThreeRowsInput, output);
         }
@@ -340,7 +386,7 @@ namespace TableTweaker.Tests
         public void CopyPatternEngineTest()
         {
             var engine = Engine.Instance;
-            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, "");
+            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, QuotedFields, "");
             var output = engine.Process(table, CopyPattern, "");
             Assert.Equal(HeaderAndThreeRowsInput, output);
         }
@@ -350,7 +396,7 @@ namespace TableTweaker.Tests
         public void InvertedCopyPatternEngineTest()
         {
             var engine = Engine.Instance;
-            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, "");
+            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, QuotedFields, "");
             var output = engine.Process(table, InvertedCopyPattern, "");
             Assert.Equal(HeaderAndThreeRowsInput, output);
         }
@@ -360,7 +406,7 @@ namespace TableTweaker.Tests
         public void AllTokenPatternEngineTest()
         {
             var engine = Engine.Instance;
-            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, "");
+            var table = new Table(HeaderAndThreeRowsInput, CommaFieldDelimitter, QuotedFields, "");
             var output = engine.Process(table, AllTokenPattern, MyCode);
             Assert.Equal(HeaderAndThreeRowsAllTokenPatternOutput, output);
         }

@@ -22,8 +22,9 @@ namespace TableTweaker.Model
 
         #endregion Singleton
 
-        private char _fieldDelimiter = ',';
-        public char FieldDelimiter { get { return _fieldDelimiter; } set { _fieldDelimiter = value; } }
+        public char FieldDelimiter { get; set; } = ',';
+
+        public bool QuotedFields { get; set; } = true;
 
         private readonly ScriptEngine _scriptEngine = new ScriptEngine();
 

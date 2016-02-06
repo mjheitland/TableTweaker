@@ -47,6 +47,12 @@
                 <ComboBoxItem>TAB</ComboBoxItem>
             </ComboBox>
 
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Qualifier</TextBlock>
+            <ComboBox x:Name="CbxQualifier" MinWidth="30" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxQualifier_SelectionChanged">
+                <ComboBoxItem>None</ComboBoxItem>
+                <ComboBoxItem IsSelected="True">"</ComboBoxItem>
+            </ComboBox>
+
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Macros</TextBlock>
             <ComboBox x:Name="CbxMacros" MinWidth="100" SelectedValuePath="Content" ToolTip="Macros" SelectionChanged="CbxMacros_SelectionChanged">
                 <ComboBoxItem>$dollar;</ComboBoxItem>

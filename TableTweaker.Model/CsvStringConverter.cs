@@ -17,14 +17,17 @@ namespace TableTweaker.Model
 		private string _currentField;
 
         private readonly char _fieldDelimiter;
-		
-		#endregion Fields
+
+        private readonly bool _quotedFields;
+
+        #endregion Fields
 
 		#region Constructor
 
-		public CsvStringConverter(char fieldDelimiter)
+		public CsvStringConverter(char fieldDelimiter, bool quotedFields)
         {
             _fieldDelimiter = fieldDelimiter;
+		    _quotedFields = quotedFields;
         }
 
 		#endregion Constructor
@@ -52,7 +55,7 @@ namespace TableTweaker.Model
                 while (i < sentinelIndex)
                 {
                     ch = input[i];
-                    if (ch == QuotationMarkChar ||
+                    if ((_quotedFields && ch == QuotationMarkChar) ||
                         ch == _fieldDelimiter ||
                         ch == RecordDelimiter)
                         break;
@@ -68,7 +71,7 @@ namespace TableTweaker.Model
                 if (i == sentinelIndex)
                     break;
 
-                if (ch == QuotationMarkChar)
+                if (_quotedFields && ch == QuotationMarkChar)
                 {
                     if (insideQuotes && i + 1 < sentinelIndex && input[i + 1] == QuotationMarkChar)
                     {

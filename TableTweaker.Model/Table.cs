@@ -17,12 +17,12 @@ namespace TableTweaker.Model
         public int NumFields => HeaderFields.Count;
         public int NumRows => Rows.Count;
 
-        public Table(string input, char fieldDelimiter, string filter)
+        public Table(string input, char fieldDelimiter, bool quotedFields, string filter)
         {
             Rows = new List<string>();
             RowFields = new List<List<string>>();
             
-            var csvStringConverter = new CsvStringConverter(fieldDelimiter);
+            var csvStringConverter = new CsvStringConverter(fieldDelimiter, quotedFields);
 
             var sentinelIndex = input.Length;
             var numFields = 0;
