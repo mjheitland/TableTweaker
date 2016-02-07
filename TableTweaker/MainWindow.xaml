@@ -34,8 +34,8 @@
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Mode</TextBlock>
             <ComboBox x:Name="CbxMode" MinWidth="60" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxMode_SelectionChanged">
-                <ComboBoxItem>Auto</ComboBoxItem>
                 <ComboBoxItem IsSelected="True">Manual</ComboBoxItem>
+                <ComboBoxItem>Auto</ComboBoxItem>
             </ComboBox>
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Delimiter</TextBlock>
@@ -49,8 +49,8 @@
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Qualifier</TextBlock>
             <ComboBox x:Name="CbxQualifier" MinWidth="30" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxQualifier_SelectionChanged">
-                <ComboBoxItem>None</ComboBoxItem>
                 <ComboBoxItem IsSelected="True">"</ComboBoxItem>
+                <ComboBoxItem>None</ComboBoxItem>
             </ComboBox>
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Macros</TextBlock>
@@ -119,8 +119,14 @@
                 <ComboBoxItem>24</ComboBoxItem>
                 <ComboBoxItem>28</ComboBoxItem>
             </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Line Wrap</TextBlock>
+            <ComboBox x:Name="CbxLineWrap" MinWidth="20" SelectedValuePath="Content" ToolTip="Break lines in Input and Output box" SelectionChanged="CbxLineWrap_SelectionChanged" IsEditable="False">
+                <ComboBoxItem IsSelected="True">No</ComboBoxItem>
+                <ComboBoxItem>Yes</ComboBoxItem>
+            </ComboBox>
         </StackPanel>
-        
+
         <TabControl x:Name="TbcMain" Grid.Row="1" SelectionChanged="TbcMain_SelectionChanged">
             <TabItem Header="Text">
                 <Grid>
@@ -189,12 +195,13 @@
                             <RichTextBox 
                                 x:Name="TbxInput" 
                                 Grid.Row="1" 
+                                HorizontalScrollBarVisibility="Auto"
                                 HorizontalAlignment="Stretch" 
                                 VerticalAlignment="Stretch" 
                                 Margin="10" 
                                 AcceptsTab="True"
                                 TextChanged="TbxInput_TextChanged">
-                                <FlowDocument>
+                                <FlowDocument x:Name="FldInput" PageWidth="10000.0">
                                     <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
                                         Last Name,First Name,Company
                                     </Paragraph>
@@ -205,7 +212,7 @@
                                         Cook,Tim,Apple
                                     </Paragraph>
                                     <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
-                                        Gates,Bill,Microsoft
+                                        Gates,"William ""Bill""",Microsoft
                                     </Paragraph>
                                 </FlowDocument>
                             </RichTextBox>
@@ -224,12 +231,13 @@
                             <RichTextBox 
                                 x:Name="TbxOutput" 
                                 Grid.Row="1" 
+                                HorizontalScrollBarVisibility="Auto"
                                 IsReadOnly="False" 
                                 AcceptsTab="True"
                                 HorizontalAlignment="Stretch" 
                                 VerticalAlignment="Stretch" 
                                 Margin="10">
-                                <FlowDocument />
+                                <FlowDocument x:Name="FldOutput" PageWidth="10000.0"/>
                             </RichTextBox>
                         </Grid>
                     </Grid>

@@ -58,5 +58,77 @@ namespace TableTweaker.Properties {
                 this["LastSessionInput"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CbxModeIndex {
+            get {
+                return ((int)(this["CbxModeIndex"]));
+            }
+            set {
+                this["CbxModeIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CbxDelimiteIndex {
+            get {
+                return ((int)(this["CbxDelimiteIndex"]));
+            }
+            set {
+                this["CbxDelimiteIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CbxQualifierIndex {
+            get {
+                return ((int)(this["CbxQualifierIndex"]));
+            }
+            set {
+                this["CbxQualifierIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".+")]
+        public string CbxFiltersValue {
+            get {
+                return ((string)(this["CbxFiltersValue"]));
+            }
+            set {
+                this["CbxFiltersValue"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int CbxFontSizeIndex {
+            get {
+                return ((int)(this["CbxFontSizeIndex"]));
+            }
+            set {
+                this["CbxFontSizeIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CbxLineWrapIndex {
+            get {
+                return ((int)(this["CbxLineWrapIndex"]));
+            }
+            set {
+                this["CbxLineWrapIndex"] = value;
+            }
+        }
     }
 }

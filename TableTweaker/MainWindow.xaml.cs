@@ -24,7 +24,7 @@ namespace TableTweaker
     {
         private readonly Engine _engine = Engine.Instance;
 
-        private bool _autoMode = true;
+        private bool _autoMode;
 
         private readonly bool _windowIsInitialized;
 
@@ -226,7 +226,7 @@ namespace TableTweaker
 
         private void CbxMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _autoMode = CbxMode.SelectedIndex == 0;
+            _autoMode = CbxMode.SelectedIndex == 1;
         }
 
         private void CbxMacros_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -270,6 +270,13 @@ namespace TableTweaker
 
         private void ManageUserSettings()
         {
+            CbxDelimiter.SelectedIndex = Settings.Default.CbxDelimiteIndex;
+            CbxFilters.SelectedValue = Settings.Default.CbxFiltersValue;
+            CbxFontSize.SelectedIndex = Settings.Default.CbxFontSizeIndex;
+            CbxLineWrap.SelectedIndex = Settings.Default.CbxLineWrapIndex;
+            CbxMode.SelectedIndex = Settings.Default.CbxModeIndex;
+            CbxQualifier.SelectedIndex = Settings.Default.CbxQualifierIndex;
+
             var lastSessionPattern = Settings.Default.LastSessionPattern;
             SetText(TbxPattern, string.IsNullOrEmpty(lastSessionPattern) ? DefaultLastSessionPattern : lastSessionPattern);
 
@@ -281,6 +288,13 @@ namespace TableTweaker
 
             Application.Current.Exit += (sender, args) =>
             {
+                Settings.Default.CbxDelimiteIndex = CbxDelimiter.SelectedIndex;
+                Settings.Default.CbxFiltersValue = CbxFilters.SelectedValue.ToString();
+                Settings.Default.CbxFontSizeIndex = CbxFontSize.SelectedIndex;
+                Settings.Default.CbxLineWrapIndex = CbxLineWrap.SelectedIndex;
+                Settings.Default.CbxModeIndex = CbxMode.SelectedIndex;
+                Settings.Default.CbxQualifierIndex = CbxQualifier.SelectedIndex;
+
                 Settings.Default.LastSessionPattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
                 Settings.Default.LastSessionInput = new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text;
                 Settings.Default.LastSessionCode = Editor.Text;
@@ -356,6 +370,24 @@ namespace TableTweaker
                 return;
 
             FontSize = int.Parse(fontSize);
+        }
+
+        private void CbxLineWrap_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return;
+
+            var value = CbxLineWrap.SelectedValue.ToString().ToLower();
+            if (value == "no")
+            {
+                FldInput.PageWidth = 10000.0;
+                FldOutput.PageWidth = 10000.0;
+            }
+            else
+            {
+                FldInput.PageWidth = double.NaN;
+                FldOutput.PageWidth = double.NaN;
+            }
         }
     }
 
