@@ -3,13 +3,61 @@
   <Profiles />
   <Settings>
     <Setting Name="LastSessionCode" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">using System;
+public string FormatDate(string date, string format)
+{
+  return DateTime.Parse(date).ToString(format);
+}
+public string IndexOf(string s, string value)
+{
+  return s.IndexOf(value).ToString();
+}
+public string Left(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length &lt; s.Length ) ? length : s.Length);
+}
+public string Right(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : ((s.Length &gt; length) ? s.Substring(s.Length - length, length) : s);
+}
+public string Replace(string s, string oldValue, string newValue)
+{
+  return s.Replace(oldValue, newValue);
+}
+public string Substring(string s, int startIndex, int length)
+{
+  return s.Substring(startIndex, length);
+}
+public string ToLower(string s)
+{
+  return s.ToLower();
+}
+public string ToUpper(string s)
+{
+  return s.ToUpper();
+}
+public string Trim(string s, string trimString)
+{
+  return s.Trim(trimString.ToCharArray());
+}
+</Value>
     </Setting>
     <Setting Name="LastSessionPattern" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">$EACH+
+$rowNum
+To: $ToLower("$1.$0@$2.com")
+Hello $1 $0,
+I'm sorry to inform you of a terrible accident at $2.
+---
+</Value>
     </Setting>
     <Setting Name="LastSessionInput" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">Last Name,First Name,Company
+Cook,Tim,Apple
+Nadella,Satya,Microsoft
+Drury,Rod,Xero
+Zuckerberg,Mark,Facebook
+Page,Larry,Google</Value>
     </Setting>
     <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

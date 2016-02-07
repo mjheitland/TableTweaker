@@ -168,8 +168,9 @@ namespace TableTweaker.Model
                             var argsScanner = new Scanner(args);
                             var argsTokens = new TokenList(argsScanner.GetAllTokens());
                             ProcessSection(table, rowNo, rowNo + 1, argsTokens, "", argsOutput);
+                            var encodedArgs = EncodeQuotationMark(argsOutput.ToString());
 
-                            var methodCall = $"{methodName}({argsOutput});";
+                            var methodCall = $"{methodName}({encodedArgs});";
 
                             var result = ScriptCSharpCode(code + methodCall);
 
@@ -194,6 +195,14 @@ namespace TableTweaker.Model
             }
         }
 
+        private static string EncodeQuotationMark(string s)
+        {
+            if (string.IsNullOrEmpty(s) || s.Length <= 2 || s[0] != '\"' || s[s.Length - 1] != '\"')
+                throw new Exception($"Internal error, invalid args ({s ?? ""})");
+
+            return $"\"{s.Substring(1, s.Length - 2).Replace("\"", "\\\"")}\"";
+        }
+
         private static void CheckColIndex(Table table, int colIndex)
         {
             if (colIndex < 0)
@@ -212,6 +221,11 @@ namespace TableTweaker.Model
             var session = _scriptEngine.CreateSession();
             var result = session.Execute(code) as string;
             return result;
+        }
+
+        public override string ToString()
+        {
+            return $"FieldDelimiter: '{FieldDelimiter}', QuotedFields: {QuotedFields}";
         }
     }
 }

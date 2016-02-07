@@ -32,62 +32,6 @@ namespace TableTweaker
 
         private readonly Style _paragraphStyle;
 
-        private const string DefaultLastSessionPattern =
-            "$EACH+\r\n" +
-            "$rowNum\r\n" +
-            "To: $ToLower(\"$1.$0@$2.com\")\r\n" +
-            "Hello $1 $0,\r\n" +
-            "I'm sorry to inform you of a terrible accident at $2.\r\n" +
-            "---\r\n";
-
-        private const string DefaultLastSessionInput =
-            "Last Name,First Name, Company\r\n" +
-            "Cook,Tim,Apple\r\n" +
-            "Nadella,Satya,Microsoft\r\n" +
-            "Drury,Rod,Xero\r\n" +
-            "Zuckerberg,Mark,Facebook\r\n" +
-            "Page,Larry,Google\r\n";
-
-        private const string DefaultLastSessionCode =
-            "using System;\r\n" +
-            "public string FormatDate(string date, string format)\r\n" +
-            "{\r\n" +
-            "\treturn DateTime.Parse(date).ToString(format);\r\n" +
-            "}\r\n" +
-            "public string IndexOf(string s, string value)\r\n" +
-            "{\r\n" +
-            "\treturn s.IndexOf(value).ToString();\r\n" +
-            "}\r\n" +
-            "public string Left(string s, int length)\r\n" +
-            "{\r\n" +
-            "\treturn string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length < s.Length ) ? length : s.Length);\r\n" +
-            "}\r\n" +
-            "public string Right(string s, int length)\r\n" +
-            "{\r\n" +
-            "\treturn string.IsNullOrEmpty(s) ? string.Empty : ((s.Length > length) ? s.Substring(s.Length - length, length) : s);\r\n" +
-            "}\r\n" +
-            "public string Replace(string s, string oldValue, string newValue)\r\n" +
-            "{\r\n" +
-            "\treturn s.Replace(oldValue, newValue);\r\n" +
-            "}\r\n" +
-            "public string Substring(string s, int startIndex, int length)\r\n" +
-            "{\r\n" +
-            "\treturn s.Substring(startIndex, length);\r\n" +
-            "}\r\n" +
-            "public string ToLower(string s)\r\n" +
-            "{\r\n" +
-            "\treturn s.ToLower();\r\n" +
-            "}\r\n" +
-            "public string ToUpper(string s)\r\n" +
-            "{\r\n" +
-            "\treturn s.ToUpper();\r\n" +
-            "}\r\n" +
-            "public string Trim(string s, string trimString)\r\n" +
-            "{\r\n" +
-            "\treturn s.Trim(trimString.ToCharArray());\r\n" +
-            "}\r\n" +
-            "\r\n";
-
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly InteractiveManager _interactiveManager;
 
@@ -277,14 +221,9 @@ namespace TableTweaker
             CbxMode.SelectedIndex = Settings.Default.CbxModeIndex;
             CbxQualifier.SelectedIndex = Settings.Default.CbxQualifierIndex;
 
-            var lastSessionPattern = Settings.Default.LastSessionPattern;
-            SetText(TbxPattern, string.IsNullOrEmpty(lastSessionPattern) ? DefaultLastSessionPattern : lastSessionPattern);
-
-            var lastSessionInput = Settings.Default.LastSessionInput;
-            SetText(TbxInput, string.IsNullOrEmpty(lastSessionInput) ? DefaultLastSessionInput : lastSessionInput);
-
-            var lastSessionCode = Settings.Default.LastSessionCode;
-            Editor.Text = string.IsNullOrEmpty(lastSessionCode) ? DefaultLastSessionCode : lastSessionCode;
+            SetText(TbxPattern, Settings.Default.LastSessionPattern);
+            SetText(TbxInput, Settings.Default.LastSessionInput);
+            Editor.Text = Settings.Default.LastSessionCode;
 
             Application.Current.Exit += (sender, args) =>
             {
@@ -351,7 +290,7 @@ namespace TableTweaker
             if (!_windowIsInitialized)
                 return; // called during initialization!
 
-            _engine.QuotedFields = CbxDelimiter.SelectedValue.ToString() == "\"";
+            _engine.QuotedFields = CbxQualifier.SelectedValue.ToString() == "\"";
             Process();
         }
 

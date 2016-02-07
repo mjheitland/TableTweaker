@@ -53,6 +53,12 @@
                 <ComboBoxItem>None</ComboBoxItem>
             </ComboBox>
 
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Filter</TextBlock>
+            <ComboBox x:Name="CbxFilters" MinWidth="150" SelectedValuePath="Content" ToolTip="Regex to filter input rows" SelectionChanged="CbxMethods_SelectionChanged" IsEditable="True">
+                <ComboBoxItem IsSelected="True">.*</ComboBoxItem>
+                <ComboBoxItem>.+</ComboBoxItem>
+            </ComboBox>
+
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Macros</TextBlock>
             <ComboBox x:Name="CbxMacros" MinWidth="100" SelectedValuePath="Content" ToolTip="Macros" SelectionChanged="CbxMacros_SelectionChanged">
                 <ComboBoxItem>$dollar;</ComboBoxItem>
@@ -95,12 +101,6 @@
                 <ComboBoxItem>$ToLower("$0")</ComboBoxItem>
                 <ComboBoxItem>$ToUpper("$0")</ComboBoxItem>
                 <ComboBoxItem>$Trim("$0"," ")</ComboBoxItem>
-            </ComboBox>
-
-            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Filter</TextBlock>
-            <ComboBox x:Name="CbxFilters" MinWidth="150" SelectedValuePath="Content" ToolTip="Regex to filter input rows" SelectionChanged="CbxMethods_SelectionChanged" IsEditable="True">
-                <ComboBoxItem IsSelected="True">.*</ComboBoxItem>
-                <ComboBoxItem>.+</ComboBoxItem>
             </ComboBox>
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Font</TextBlock>
@@ -153,6 +153,7 @@
                             AcceptsTab="True"
                             TextChanged="TbxPattern_TextChanged">
                             <FlowDocument>
+                                <!-- This content gets overwritten at start time by the text taken from Default.Settings.LastSessionInput /-->
                                 <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
                                     $EACH+
                                 </Paragraph>
@@ -212,7 +213,7 @@
                                         Cook,Tim,Apple
                                     </Paragraph>
                                     <Paragraph Style="{StaticResource ParagraphWithNoMarginStyle}">
-                                        Gates,"William ""Bill""",Microsoft
+                                        Gates,William Bill,Microsoft
                                     </Paragraph>
                                 </FlowDocument>
                             </RichTextBox>

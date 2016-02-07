@@ -25,7 +25,44 @@ namespace TableTweaker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"using System;
+public string FormatDate(string date, string format)
+{
+  return DateTime.Parse(date).ToString(format);
+}
+public string IndexOf(string s, string value)
+{
+  return s.IndexOf(value).ToString();
+}
+public string Left(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length < s.Length ) ? length : s.Length);
+}
+public string Right(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : ((s.Length > length) ? s.Substring(s.Length - length, length) : s);
+}
+public string Replace(string s, string oldValue, string newValue)
+{
+  return s.Replace(oldValue, newValue);
+}
+public string Substring(string s, int startIndex, int length)
+{
+  return s.Substring(startIndex, length);
+}
+public string ToLower(string s)
+{
+  return s.ToLower();
+}
+public string ToUpper(string s)
+{
+  return s.ToUpper();
+}
+public string Trim(string s, string trimString)
+{
+  return s.Trim(trimString.ToCharArray());
+}
+")]
         public string LastSessionCode {
             get {
                 return ((string)(this["LastSessionCode"]));
@@ -37,7 +74,8 @@ namespace TableTweaker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("$EACH+\r\n$rowNum\r\nTo: $ToLower(\"$1.$0@$2.com\")\r\nHello $1 $0,\r\nI\'m sorry to inform " +
+            "you of a terrible accident at $2.\r\n---\r\n")]
         public string LastSessionPattern {
             get {
                 return ((string)(this["LastSessionPattern"]));
@@ -49,7 +87,8 @@ namespace TableTweaker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\r\nCook,Tim,Apple\r\nNadella,Satya,Microsoft\r\nDrury,Rod," +
+            "Xero\r\nZuckerberg,Mark,Facebook\r\nPage,Larry,Google")]
         public string LastSessionInput {
             get {
                 return ((string)(this["LastSessionInput"]));
