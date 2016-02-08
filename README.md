@@ -12,8 +12,6 @@ Examples
 --------
 * Generate SQL INSERT statements from an Excel table
 * Convert test data into C# containers
+* Extract or reorder columns from a csv file
 * Transform spreadsheets
 * ...
-
-
-Presentation: https://docs.google.com/presentation/d/1XnY2db7e_oySkYgTRow-FiCG-Yztv-XkLWwmHHeSi3M/edit#slide=id.g9f1b1f355_2_14

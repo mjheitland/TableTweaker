@@ -50,7 +50,7 @@ namespace TableTweaker
             Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_interactiveManager);
 
             var helpContent = File.ReadAllText(@"Content\help.html");
-            WebBrowser.NavigateToString(helpContent);
+            Help.NavigateToString(helpContent);
 
             TbxInput.Focus();
 
@@ -82,8 +82,7 @@ namespace TableTweaker
                         filter = ".*";
                     }
 
-                    var input =
-                        new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text.Replace("\r", "");
+                    var input = GetText(TbxInput);
                     var table = new Table(input, _engine.FieldDelimiter, _engine.QuotedFields, filter);
 
                     var pattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
@@ -107,6 +106,11 @@ namespace TableTweaker
             }
         }
 
+        private string GetText(RichTextBox tbx)
+        {
+            return new TextRange(tbx.Document.ContentStart, tbx.Document.ContentEnd).Text.Replace("\r", "");
+        }
+
         private void SetText(RichTextBox richTextBox, string text)
         {
             richTextBox.Document.Blocks.Clear();
@@ -121,7 +125,8 @@ namespace TableTweaker
             }
 
             var lines = text.Replace("\r", "").Split("\n".ToCharArray());
-            lines.Select(line =>
+            lines
+                .Select(line =>
                 new Paragraph(new Run(line))
                 {
                     Style = _paragraphStyle
@@ -220,6 +225,10 @@ namespace TableTweaker
             CbxLineWrap.SelectedIndex = Settings.Default.CbxLineWrapIndex;
             CbxMode.SelectedIndex = Settings.Default.CbxModeIndex;
             CbxQualifier.SelectedIndex = Settings.Default.CbxQualifierIndex;
+            CbxResultGridColumns.SelectedIndex = Settings.Default.CbxResultGridColumnsIndex;
+
+            _engine.FieldDelimiter = CbxDelimiter.SelectedValue.ToString()[0];
+            _engine.QuotedFields = CbxQualifier.SelectedValue.ToString().ToLower() == "\"";
 
             SetText(TbxPattern, Settings.Default.LastSessionPattern);
             SetText(TbxInput, Settings.Default.LastSessionInput);
@@ -233,6 +242,7 @@ namespace TableTweaker
                 Settings.Default.CbxLineWrapIndex = CbxLineWrap.SelectedIndex;
                 Settings.Default.CbxModeIndex = CbxMode.SelectedIndex;
                 Settings.Default.CbxQualifierIndex = CbxQualifier.SelectedIndex;
+                Settings.Default.CbxResultGridColumnsIndex = CbxResultGridColumns.SelectedIndex;
 
                 Settings.Default.LastSessionPattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
                 Settings.Default.LastSessionInput = new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text;
@@ -268,6 +278,8 @@ namespace TableTweaker
             }
         }
 
+        #endregion Code Editor
+
         private void CbxDelimiter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!_windowIsInitialized)
@@ -296,7 +308,11 @@ namespace TableTweaker
 
         private void TbcMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BtnRun.Content = (TbcMain.SelectedIndex == 1) ? "Check (F5)" : "Run (F5)";
+            BtnRun.Content = (TbcMain.SelectedIndex == 2) ? "Check (F5)" : "Run (F5)";
+            if (TbcMain.SelectedIndex == 1)
+            {
+                LoadInputAndOutputIntoResultGrid(CbxResultGridColumns.SelectedIndex + 1);
+            }
         }
 
         private void CbxFontSize_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -328,6 +344,77 @@ namespace TableTweaker
                 FldOutput.PageWidth = double.NaN;
             }
         }
+
+        private void CbxResultGridColumns_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return;
+
+            LoadInputAndOutputIntoResultGrid(CbxResultGridColumns.SelectedIndex + 1);
+        }
+
+        #region Result
+
+        private string CreateOneColumnRow(string input, string output)
+        {
+            return $"<tr style=\"background-color: #ddd;\"><td>{input}</td></tr>"
+                + $"<tr style=\"background-color: #fff;\"><td>{output}</td></tr>";
+        }
+
+        private string CreateTwoColumnRow(string input, string output, bool darker)
+        {
+            return "<tr style=\"background-color: " + (darker ? "#ddd" : "#fff") + $";\"><td>{input}</td><td>{output}</td></tr>";
+        }
+
+        private void LoadInputAndOutputIntoResultGrid(int numColumns)
+        {
+            var inputLines = GetText(TbxInput).Split("\n".ToCharArray());
+            var outputLines = GetText(TbxOutput).Split("\n".ToCharArray());
+
+            string rows;
+            if (numColumns == 1)
+            {
+                rows = inputLines
+                    .Select((inputLine, i) => new[] { inputLine, i < outputLines.Length ? outputLines[i] : "" })
+                    .Select((linePair, i) => CreateOneColumnRow(linePair[0], linePair[1]))
+                    .Aggregate((a, b) => a + b);
+            }
+            else
+            {
+                rows = inputLines
+                    .Select((inputLine, i) => new[] { inputLine, i < outputLines.Length ? outputLines[i] : "" })
+                    .Select((linePair, i) => CreateTwoColumnRow(linePair[0], linePair[1], i % 2 == 0))
+                    .Aggregate((a, b) => a + b);
+            }
+
+            var content =
+                $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel=""stylesheet"" href=""https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"" crossorigin=""anonymous"">
+</head>
+<body>
+    <div class=""container"">
+        <table class=""table table-striped"">
+        <thead></thead>
+        <tbody>
+            {rows}
+        </tbody>
+        </table>
+    </div>
+</body>
+</html>";
+
+            if (numColumns == 2)
+            {
+                content = content.Replace("<thead></thead>", "<thead><th>Input</th><th>Output</th></thead>");
+            }
+
+            MyWebBrowser.NavigateToString(content);
+        }
+
+        #endregion // Result
     }
 
     class ResultObject
@@ -398,7 +485,5 @@ namespace TableTweaker
                 _children = properties;
             }
         }
-
-        #endregion Code Editor
     }
 }

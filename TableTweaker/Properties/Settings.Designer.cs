@@ -169,5 +169,17 @@ public string Trim(string s, string trimString)
                 this["CbxLineWrapIndex"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int CbxResultGridColumnsIndex {
+            get {
+                return ((int)(this["CbxResultGridColumnsIndex"]));
+            }
+            set {
+                this["CbxResultGridColumnsIndex"] = value;
+            }
+        }
     }
 }

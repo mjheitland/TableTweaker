@@ -1,3 +1,0 @@
-- allow " in code parameters, e.g. 	using System;
-    Replace("[{"group":"CURRENT", products:[""]},{"group":"LOAN", products:[""]},{"group":"TERM_DEPOSIT", products:[""]}]", "\"", "\\\"");
-- show alternate rows (e.g. using a web view as a second view)

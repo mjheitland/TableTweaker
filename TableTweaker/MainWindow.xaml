@@ -125,6 +125,12 @@
                 <ComboBoxItem IsSelected="True">No</ComboBoxItem>
                 <ComboBoxItem>Yes</ComboBoxItem>
             </ComboBox>
+
+            <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Result Grid Columns</TextBlock>
+            <ComboBox x:Name="CbxResultGridColumns" MinWidth="20" SelectedValuePath="Content" ToolTip="Show result in one or two columns" SelectionChanged="CbxResultGridColumns_SelectionChanged" IsEditable="False">
+                <ComboBoxItem IsSelected="True">1</ComboBoxItem>
+                <ComboBoxItem>2</ComboBoxItem>
+            </ComboBox>
         </StackPanel>
 
         <TabControl x:Name="TbcMain" Grid.Row="1" SelectionChanged="TbcMain_SelectionChanged">
@@ -245,6 +251,14 @@
                 </Grid>
             </TabItem>
 
+
+            <TabItem Header="Result">
+                <WebBrowser 
+                    x:Name="MyWebBrowser"
+                    Margin="0,-4,0,3.8">
+                </WebBrowser>
+            </TabItem>
+
             
             <TabItem Header="Code">
                 <DockPanel>
@@ -274,7 +288,7 @@
 
             
             <TabItem Header="Help">
-                <WebBrowser x:Name="WebBrowser"/>
+                <WebBrowser x:Name="Help"/>
             </TabItem>
         </TabControl>
 
