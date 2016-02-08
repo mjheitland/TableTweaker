@@ -6,7 +6,7 @@
         Icon="Content/Logo.png"
         Title="TableTweaker" 
         WindowState="Maximized"
-        Loaded="MainWindow_OnLoaded">
+        >
 
     <Window.Resources>
         <Style x:Key="ParagraphWithNoMarginStyle" TargetType="{x:Type Paragraph}">
@@ -33,7 +33,7 @@
             <Button x:Name="BtnRun" Click="BtnRun_Click">Run (F5)</Button>
 
             <TextBlock VerticalAlignment="Center" Margin="20,0,10,0">Mode</TextBlock>
-            <ComboBox x:Name="CbxMode" MinWidth="60" SelectedValuePath="Content" ToolTip="Mode" SelectionChanged="CbxMode_SelectionChanged">
+            <ComboBox x:Name="CbxMode" MinWidth="60" SelectedValuePath="Content" ToolTip="Mode">
                 <ComboBoxItem IsSelected="True">Manual</ComboBoxItem>
                 <ComboBoxItem>Auto</ComboBoxItem>
             </ComboBox>

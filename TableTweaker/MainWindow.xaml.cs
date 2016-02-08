@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,9 +20,9 @@ namespace TableTweaker
     /// </summary>
     public partial class MainWindow
     {
-        private readonly Engine _engine = Engine.Instance;
+        #region Private Fields
 
-        private bool _autoMode;
+        private readonly Engine _engine = Engine.Instance;
 
         private readonly bool _windowIsInitialized;
 
@@ -34,6 +32,30 @@ namespace TableTweaker
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
         private readonly InteractiveManager _interactiveManager;
+
+        #endregion Private Fields
+
+        #region Properties
+
+        public char FieldDelimiter => CbxDelimiter.SelectedValue.ToString().Length == 1 ? CbxDelimiter.SelectedValue.ToString()[0] : '\t';
+
+        public string Filter => CbxFilters.SelectedValue?.ToString() ?? CbxFilters.Text;
+
+        public int SelectedFontSize => int.Parse(CbxFontSize.SelectedValue?.ToString() ?? "12");
+
+        public bool IsAutoMode => CbxMode.SelectedIndex == 1;
+
+        public string Macro => CbxMacros.SelectedValue?.ToString() ?? "";
+
+        public string Method => CbxMethods.SelectedValue?.ToString() ?? "";
+
+        public double PageWidth => CbxLineWrap.SelectedIndex == 0 ? 10000.0 : double.NaN;
+
+        public bool QuotedFields => (CbxQualifier.SelectedValue?.ToString().ToLower() ?? "") == "\"";
+
+        #endregion Properties
+
+        #region Constructor
 
         public MainWindow()
         {
@@ -59,13 +81,43 @@ namespace TableTweaker
             Process(); 
         }
 
-        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-        }
+        #endregion Constructor
 
-        private void BtnRun_Click(object sender, RoutedEventArgs e)
+        #region Methods
+
+        private void ManageUserSettings()
         {
-            Process();
+            CbxDelimiter.SelectedIndex = Settings.Default.CbxDelimiteIndex;
+            CbxFilters.SelectedValue = Settings.Default.CbxFiltersValue;
+            CbxFontSize.SelectedIndex = Settings.Default.CbxFontSizeIndex;
+            CbxLineWrap.SelectedIndex = Settings.Default.CbxLineWrapIndex;
+            CbxMode.SelectedIndex = Settings.Default.CbxModeIndex;
+            CbxQualifier.SelectedIndex = Settings.Default.CbxQualifierIndex;
+            CbxResultGridColumns.SelectedIndex = Settings.Default.CbxResultGridColumnsIndex;
+
+            _engine.FieldDelimiter = FieldDelimiter;
+            _engine.QuotedFields = QuotedFields;
+
+            SetText(TbxPattern, Settings.Default.LastSessionPattern);
+            SetText(TbxInput, Settings.Default.LastSessionInput);
+            Editor.Text = Settings.Default.LastSessionCode;
+
+            Application.Current.Exit += (sender, args) =>
+            {
+                Settings.Default.CbxDelimiteIndex = CbxDelimiter.SelectedIndex;
+                Settings.Default.CbxFiltersValue = CbxFilters.SelectedValue.ToString();
+                Settings.Default.CbxFontSizeIndex = CbxFontSize.SelectedIndex;
+                Settings.Default.CbxLineWrapIndex = CbxLineWrap.SelectedIndex;
+                Settings.Default.CbxModeIndex = CbxMode.SelectedIndex;
+                Settings.Default.CbxQualifierIndex = CbxQualifier.SelectedIndex;
+                Settings.Default.CbxResultGridColumnsIndex = CbxResultGridColumns.SelectedIndex;
+
+                Settings.Default.LastSessionPattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
+                Settings.Default.LastSessionInput = new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text;
+                Settings.Default.LastSessionCode = Editor.Text;
+
+                Settings.Default.Save();
+            };
         }
 
         private void Process()
@@ -76,7 +128,7 @@ namespace TableTweaker
                     return; // called during initialization!
 
                 using (new WaitCursor()) { 
-                    var filter = CbxFilters.SelectedValue?.ToString() ?? CbxFilters.Text;
+                    var filter = Filter;
                     if (string.IsNullOrEmpty(filter))
                     {
                         filter = ".*";
@@ -135,122 +187,7 @@ namespace TableTweaker
                 .ForEach(richTextBox.Document.Blocks.Add);
         }
 
-        private void TbxPattern_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!_windowIsInitialized)
-                return; // called during initialization!
-
-            if (_autoMode)
-            {
-                Process();
-            }
-
-            SetParagraphStyle(TbxPattern);
-        }
-
-        private void TbxInput_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!_windowIsInitialized)
-                return; // called during initialization!
-
-            if (_autoMode)
-            {
-                Process();
-            }
-            else
-            {
-                TblMessage.Text = $"{TbxInput.Document.Blocks.Count} unfiltered input rows";
-            }
-
-            SetParagraphStyle(TbxInput);
-        }
-
-        private void SetParagraphStyle(RichTextBox richTextBox)
-        {
-            foreach (var paragraph in richTextBox.Document.Blocks)
-            {
-                paragraph.Style = _paragraphStyle;
-            }
-        }
-
-        private void CbxMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            _autoMode = CbxMode.SelectedIndex == 1;
-        }
-
-        private void CbxMacros_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!_windowIsInitialized)
-                return; // called during initialization!
-
-            if (CbxMacros.SelectedIndex == -1)
-                return;
-
-            var macro = CbxMacros.SelectedValue.ToString();
-            if (string.IsNullOrWhiteSpace(macro))
-                return;
-
-            if (macro == "$ONCE" || macro == "$EACH" || macro == "$EACH+")
-            {
-                macro += "\n";
-            }
-
-            TbxPattern.CaretPosition.InsertTextInRun(macro);
-
-            CbxMacros.SelectedIndex = -1;
-        }
-
-        private void CbxMethods_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!_windowIsInitialized)
-                return; // called during initialization!
-
-            if (CbxMethods.SelectedIndex == -1)
-                return;
-
-            var method = CbxMethods.SelectedValue.ToString();
-            if (string.IsNullOrWhiteSpace(method))
-                return;
-
-            TbxPattern.CaretPosition.InsertTextInRun(method);
-
-            CbxMethods.SelectedIndex = -1;
-        }
-
-        private void ManageUserSettings()
-        {
-            CbxDelimiter.SelectedIndex = Settings.Default.CbxDelimiteIndex;
-            CbxFilters.SelectedValue = Settings.Default.CbxFiltersValue;
-            CbxFontSize.SelectedIndex = Settings.Default.CbxFontSizeIndex;
-            CbxLineWrap.SelectedIndex = Settings.Default.CbxLineWrapIndex;
-            CbxMode.SelectedIndex = Settings.Default.CbxModeIndex;
-            CbxQualifier.SelectedIndex = Settings.Default.CbxQualifierIndex;
-            CbxResultGridColumns.SelectedIndex = Settings.Default.CbxResultGridColumnsIndex;
-
-            _engine.FieldDelimiter = CbxDelimiter.SelectedValue.ToString()[0];
-            _engine.QuotedFields = CbxQualifier.SelectedValue.ToString().ToLower() == "\"";
-
-            SetText(TbxPattern, Settings.Default.LastSessionPattern);
-            SetText(TbxInput, Settings.Default.LastSessionInput);
-            Editor.Text = Settings.Default.LastSessionCode;
-
-            Application.Current.Exit += (sender, args) =>
-            {
-                Settings.Default.CbxDelimiteIndex = CbxDelimiter.SelectedIndex;
-                Settings.Default.CbxFiltersValue = CbxFilters.SelectedValue.ToString();
-                Settings.Default.CbxFontSizeIndex = CbxFontSize.SelectedIndex;
-                Settings.Default.CbxLineWrapIndex = CbxLineWrap.SelectedIndex;
-                Settings.Default.CbxModeIndex = CbxMode.SelectedIndex;
-                Settings.Default.CbxQualifierIndex = CbxQualifier.SelectedIndex;
-                Settings.Default.CbxResultGridColumnsIndex = CbxResultGridColumns.SelectedIndex;
-
-                Settings.Default.LastSessionPattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
-                Settings.Default.LastSessionInput = new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text;
-                Settings.Default.LastSessionCode = Editor.Text;
-
-                Settings.Default.Save();
-            };
-        }
+        #endregion Methods
 
         #region Code Editor
 
@@ -280,20 +217,96 @@ namespace TableTweaker
 
         #endregion Code Editor
 
+        #region Event Handler
+
+        private void BtnRun_Click(object sender, RoutedEventArgs e)
+        {
+            Process();
+        }
+
+        private void TbxPattern_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return; // called during initialization!
+
+            if (IsAutoMode)
+            {
+                Process();
+            }
+
+            SetParagraphStyle(TbxPattern);
+        }
+
+        private void TbxInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return; // called during initialization!
+
+            if (IsAutoMode)
+            {
+                Process();
+            }
+            else
+            {
+                TblMessage.Text = $"{TbxInput.Document.Blocks.Count} unfiltered input rows";
+            }
+
+            SetParagraphStyle(TbxInput);
+        }
+
+        private void SetParagraphStyle(RichTextBox richTextBox)
+        {
+            foreach (var paragraph in richTextBox.Document.Blocks)
+            {
+                paragraph.Style = _paragraphStyle;
+            }
+        }
+
+        private void CbxMacros_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return; // called during initialization!
+
+            if (CbxMacros.SelectedIndex == -1)
+                return;
+
+            var macro = Macro;
+            if (string.IsNullOrWhiteSpace(macro))
+                return;
+
+            if (macro == "$ONCE" || macro == "$EACH" || macro == "$EACH+")
+            {
+                macro += "\n";
+            }
+
+            TbxPattern.CaretPosition.InsertTextInRun(macro);
+
+            CbxMacros.SelectedIndex = -1;
+        }
+
+        private void CbxMethods_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_windowIsInitialized)
+                return; // called during initialization!
+
+            if (CbxMethods.SelectedIndex == -1)
+                return;
+
+            var method = Method;
+            if (string.IsNullOrWhiteSpace(method))
+                return;
+
+            TbxPattern.CaretPosition.InsertTextInRun(method);
+
+            CbxMethods.SelectedIndex = -1;
+        }
+
         private void CbxDelimiter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!_windowIsInitialized)
                 return; // called during initialization!
 
-            var delimiter = CbxDelimiter.SelectedValue.ToString();
-            if (delimiter == "TAB")
-            {
-                delimiter = "\t";
-            }
-            if (delimiter.Length != 1)
-                return;
-
-            _engine.FieldDelimiter = delimiter[0];
+            _engine.FieldDelimiter = FieldDelimiter;
             Process();
         }
 
@@ -302,7 +315,7 @@ namespace TableTweaker
             if (!_windowIsInitialized)
                 return; // called during initialization!
 
-            _engine.QuotedFields = CbxQualifier.SelectedValue.ToString() == "\"";
+            _engine.QuotedFields = QuotedFields;
             Process();
         }
 
@@ -320,11 +333,7 @@ namespace TableTweaker
             if (!_windowIsInitialized)
                 return;
 
-            var fontSize = CbxFontSize.SelectedValue.ToString();
-            if (string.IsNullOrWhiteSpace(fontSize))
-                return;
-
-            FontSize = int.Parse(fontSize);
+            FontSize = SelectedFontSize;
         }
 
         private void CbxLineWrap_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -332,17 +341,8 @@ namespace TableTweaker
             if (!_windowIsInitialized)
                 return;
 
-            var value = CbxLineWrap.SelectedValue.ToString().ToLower();
-            if (value == "no")
-            {
-                FldInput.PageWidth = 10000.0;
-                FldOutput.PageWidth = 10000.0;
-            }
-            else
-            {
-                FldInput.PageWidth = double.NaN;
-                FldOutput.PageWidth = double.NaN;
-            }
+            FldInput.PageWidth = PageWidth;
+            FldOutput.PageWidth = PageWidth;
         }
 
         private void CbxResultGridColumns_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -352,6 +352,8 @@ namespace TableTweaker
 
             LoadInputAndOutputIntoResultGrid(CbxResultGridColumns.SelectedIndex + 1);
         }
+
+        #endregion Event Handler
 
         #region Result
 
@@ -415,75 +417,5 @@ namespace TableTweaker
         }
 
         #endregion // Result
-    }
-
-    class ResultObject
-    {
-        private readonly object _o;
-        private readonly PropertyDescriptor _property;
-        private bool _initialized;
-        private string _header;
-        private IEnumerable _children;
-
-        public ResultObject(object o, PropertyDescriptor property = null)
-        {
-            _o = o;
-            _property = property;
-        }
-
-        public string Header
-        {
-            get
-            {
-                Initialize();
-                return _header;
-            }
-        }
-
-        public IEnumerable Children
-        {
-            get
-            {
-                Initialize();
-                return _children;
-            }
-        }
-
-        private void Initialize()
-        {
-            if (_initialized) return;
-            _initialized = true;
-
-            if (_o == null)
-            {
-                _header = "<null>";
-                return;
-            }
-
-            if (_property != null)
-            {
-                var value = _property.GetValue(_o);
-                _header = _property.Name + " = " + value;
-                _children = new[] { value };
-                return;
-            }
-
-            var e = _o as IEnumerable;
-            if (e != null)
-            {
-                var enumerableChildren = e.Cast<object>().Select(x => new ResultObject(x)).ToArray();
-                _children = enumerableChildren;
-                _header = $"<enumerable count={enumerableChildren.Length}>";
-                return;
-            }
-
-            var properties = TypeDescriptor.GetProperties(_o).Cast<PropertyDescriptor>()
-                .Select(p => new ResultObject(_o, p)).ToArray();
-            _header = _o.ToString();
-            if (properties.Length > 0)
-            {
-                _children = properties;
-            }
-        }
     }
 }

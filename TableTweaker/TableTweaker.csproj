@@ -170,6 +170,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ResultObject.cs" />
     <Compile Include="Roslyn\InteractiveManager.cs" />
     <Compile Include="Roslyn\InteractiveWorkspace.cs" />
     <Compile Include="Runtime\ObjectExtensions.cs" />
