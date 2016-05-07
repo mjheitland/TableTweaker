@@ -12,7 +12,7 @@ namespace TableTweaker.Console
             try
             {
                 if (args.Length != 7)
-                    throw new Exception("Usage: TableTweaker.Console <inputFile> <fieldDelimitter> [quotedFields | unquotedFields] <filter> <patternFile> <codeFile> <outputPath>");
+                    throw new Exception("Usage: TableTweaker.Console <inputFile> <fieldDelimitter> (quotedFields | unquotedFields) <filter> <patternFile> <codeFile> <outputPath>");
 
                 var input = File.ReadAllText(args[0]);
                 var fieldDelimiter = string.IsNullOrEmpty(args[1]) ? ',' : args[1][0];
