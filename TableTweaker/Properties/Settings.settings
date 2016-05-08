@@ -51,14 +51,6 @@ I'm sorry to inform you of a terrible accident at $2.
 ---
 </Value>
     </Setting>
-    <Setting Name="LastSessionInput" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Last Name,First Name,Company
-Cook,Tim,Apple
-Nadella,Satya,Microsoft
-Drury,Rod,Xero
-Zuckerberg,Mark,Facebook
-Page,Larry,Google</Value>
-    </Setting>
     <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
@@ -79,6 +71,15 @@ Page,Larry,Google</Value>
     </Setting>
     <Setting Name="CbxResultGridColumnsIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LastSessionInput" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Last Name,First Name,Company
+Cook,Tim,Apple
+Nadella,Satya,Microsoft
+Drury,Rod,Xero
+Zuckerberg,Mark,Facebook
+Page,Larry,Google
+</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,0 +1,3 @@
+- Result shows only first 12 lines
+- code check (F5) currently not activated
+- tidy up code, remove unnecessary Roslyn lines

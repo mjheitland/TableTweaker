@@ -31,7 +31,7 @@ namespace TableTweaker
         private readonly Style _paragraphStyle;
 
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        private readonly InteractiveManager _interactiveManager;
+        //private readonly InteractiveManager _interactiveManager;
 
         #endregion Private Fields
 
@@ -67,9 +67,10 @@ namespace TableTweaker
 
             ManageUserSettings();
 
-            _interactiveManager = new InteractiveManager();
-            _interactiveManager.SetDocument(Editor.AsTextContainer());
-            Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_interactiveManager, new RoslynHost());
+            // TODO
+            //_interactiveManager = new InteractiveManager();
+            //_interactiveManager.SetDocument(Editor.AsTextContainer());
+            //Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_interactiveManager, new RoslynHost());
 
             var helpContent = File.ReadAllText(@"Content\help.html");
             Help.NavigateToString(helpContent);
@@ -202,7 +203,8 @@ namespace TableTweaker
             {
                 if (TbcMain.SelectedIndex == 1) // Code tab
                 {
-                    _interactiveManager.Execute();
+                    // TODO
+                    //_interactiveManager.Execute();
                     MessageBox.Show("Code is correct!", "TableTweaker");
                 } else // not on Code tab
                 {

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="TableTweaker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:editor="clr-namespace:TableTweaker.Editor"
+        xmlns:editor1="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Common"
         FontSize="12"
         Icon="Content/Logo.png"
         Title="TableTweaker" 
@@ -281,7 +281,7 @@
                             <Button Content="Check" Command="Play" />
                         </ToolBar>-->
 
-                        <editor:CodeTextEditor x:Name="Editor" x:FieldModifier="private" />
+                        <editor1:CodeTextEditor x:Name="Editor" x:FieldModifier="private" />
                     </Grid>
                 </DockPanel>
             </TabItem>

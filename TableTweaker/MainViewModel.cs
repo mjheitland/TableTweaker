@@ -6,10 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Microsoft.ApplicationInsights;
 using RoslynPad;
 using RoslynPad.Host;
 using RoslynPad.Roslyn;
 using RoslynPad.Utilities;
+using TableTweaker.Properties;
 
 namespace TableTweaker
 {
@@ -32,9 +34,6 @@ namespace TableTweaker
 
         public MainViewModel()
         {
-            NuGet = new NuGetViewModel();
-            NuGetProvider = new NuGetProviderImpl(NuGet.GlobalPackageFolder, NuGetPathVariableName);
-            RoslynHost = new RoslynHost(NuGetProvider);
             ChildProcessManager = new ChildProcessManager();
 
             NewDocumentCommand = new DelegateCommand((Action)CreateNewDocument);
@@ -67,15 +66,6 @@ namespace TableTweaker
             Application.Current.DispatcherUnhandledException += (o, e) => OnUnhandledDispatcherException(e);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => OnUnhandledException((Exception)e.ExceptionObject, flushSync: true);
             TaskScheduler.UnobservedTaskException += (o, e) => OnUnhandledException(e.Exception);
-
-            if (HasCachedUpdate())
-            {
-                HasUpdate = true;
-            }
-            else
-            {
-                Task.Run(CheckForUpdates);
-            }
         }
 
         private void ReportProblem()
@@ -96,55 +86,11 @@ namespace TableTweaker
             private set { SetProperty(ref _hasUpdate, value); }
         }
 
-        private static bool HasCachedUpdate()
-        {
-            Version latestVersion;
-            return Version.TryParse(Properties.Settings.Default.LatestVersion, out latestVersion) &&
-                   latestVersion > _currentVersion;
-        }
-
-        private async Task CheckForUpdates()
-        {
-            string latestVersionString;
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    latestVersionString = await client.GetStringAsync("https://roslynpad.net/latest").ConfigureAwait(false);
-                }
-                catch
-                {
-                    return;
-                }
-            }
-            Version latestVersion;
-            if (Version.TryParse(latestVersionString, out latestVersion))
-            {
-                if (latestVersion > _currentVersion)
-                {
-                    HasUpdate = true;
-                }
-                Properties.Settings.Default.LatestVersion = latestVersionString;
-                Properties.Settings.Default.Save();
-            }
-        }
-
         private DocumentViewModel CreateDocumentRoot()
         {
             var root = DocumentViewModel.CreateRoot(this);
-            if (!Directory.Exists(Path.Combine(root.Path, "Samples")))
-            {
-                // ReSharper disable once PossibleNullReferenceException
-                using (var stream = Application.GetResourceStream(new Uri("pack://application:,,,/RoslynPad;component/Resources/Samples.zip")).Stream)
-                using (var archive = new ZipArchive(stream))
-                {
-                    archive.ExtractToDirectory(root.Path);
-                }
-            }
             return root;
         }
-
-        public NuGetViewModel NuGet { get; }
 
         public ObservableCollection<OpenDocumentViewModel> OpenDocuments { get; }
 
@@ -245,11 +191,6 @@ namespace TableTweaker
                 {
                     _telemetryClient.Flush();
                 }
-                // TODO: check why this freezes the UI
-                //else
-                //{
-                //    Task.Run(() => _telemetryClient.Value.Flush());
-                //}
             }
         }
 
@@ -269,10 +210,9 @@ namespace TableTweaker
 
         public bool SendTelemetry
         {
-            get { return Properties.Settings.Default.SendErrors; }
+            get { return true; }
             set
             {
-                Properties.Settings.Default.SendErrors = value;
                 Properties.Settings.Default.Save();
                 OnPropertyChanged(nameof(SendTelemetry));
             }

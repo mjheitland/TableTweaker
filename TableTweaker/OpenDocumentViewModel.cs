@@ -45,7 +45,6 @@ namespace TableTweaker
         {
             Document = document;
             MainViewModel = mainViewModel;
-            NuGet = new NuGetDocumentViewModel(mainViewModel.NuGet);
             _dispatcher = Dispatcher.CurrentDispatcher;
 
             var roslynHost = mainViewModel.RoslynHost;
@@ -214,8 +213,6 @@ namespace TableTweaker
         public DocumentId DocumentId { get; private set; }
 
         public MainViewModel MainViewModel { get; }
-
-        public NuGetDocumentViewModel NuGet { get; }
 
         public string Title => Document != null && !Document.IsAutoSaveOnly ? Document.Name : "New";
 

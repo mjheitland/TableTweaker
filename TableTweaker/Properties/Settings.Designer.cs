@@ -87,19 +87,6 @@ public string Trim(string s, string trimString)
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\r\nCook,Tim,Apple\r\nNadella,Satya,Microsoft\r\nDrury,Rod," +
-            "Xero\r\nZuckerberg,Mark,Facebook\r\nPage,Larry,Google")]
-        public string LastSessionInput {
-            get {
-                return ((string)(this["LastSessionInput"]));
-            }
-            set {
-                this["LastSessionInput"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int CbxModeIndex {
             get {
@@ -179,6 +166,19 @@ public string Trim(string s, string trimString)
             }
             set {
                 this["CbxResultGridColumnsIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\r\nCook,Tim,Apple\r\nNadella,Satya,Microsoft\r\nDrury,Rod," +
+            "Xero\r\nZuckerberg,Mark,Facebook\r\nPage,Larry,Google\r\n")]
+        public string LastSessionInput {
+            get {
+                return ((string)(this["LastSessionInput"]));
+            }
+            set {
+                this["LastSessionInput"] = value;
             }
         }
     }

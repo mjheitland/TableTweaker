@@ -35,110 +35,6 @@
                 <RowDefinition Height="5" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <ToolBar Grid.ColumnSpan="3"
-                     Background="Transparent"
-                     BorderBrush="DarkGray"
-                     BorderThickness="0 0 0 1">
-                <Button Command="{Binding RunCommand}"
-                        ToolTip="Run (F5)">
-                    <Grid>
-                        <Image Source="{StaticResource Run}" />
-                        <ProgressBar VerticalAlignment="Bottom"
-                                     Height="4"
-                                     IsIndeterminate="{Binding IsRunning}"
-                                     BorderThickness="0"
-                                     Visibility="{Binding IsRunning, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                    </Grid>
-                </Button>
-                <Button Command="{Binding RestartHostCommand}"
-                        ToolTip="Restart host process (Shift-F5)"
-                        Content="{StaticResource Restart}" />
-                <ComboBox SelectedItem="{Binding Platform}">
-                    <codeAnalysis:Platform>X86</codeAnalysis:Platform>
-                    <codeAnalysis:Platform>X64</codeAnalysis:Platform>
-                </ComboBox>
-                <Separator />
-                <Button Command="{Binding SaveCommand}"
-                        ToolTip="Save (Ctrl-S)"
-                        Content="{StaticResource Save}" />
-                <Separator />
-                <Label Content="NuGet" />
-                <Menu Background="Transparent"
-                      Name="RootMenu"
-                      IsEnabled="{Binding NuGet.IsEnabled}">
-                    <MenuItem IsSubmenuOpen="{Binding NuGet.HasPackages}"
-                              ItemsSource="{Binding NuGet.Packages}"
-                              Header="{Binding NuGet}"
-                              IsTextSearchEnabled="True">
-                        <MenuItem.HeaderTemplate>
-                            <DataTemplate DataType="{x:Type roslynPad:NuGetDocumentViewModel}">
-                                <Grid>
-                                    <TextBlock Name="Text"
-                                               Text=""
-                                               FontFamily="Segoe UI Symbol" />
-                                    <ProgressBar VerticalAlignment="Bottom"
-                                                 Height="4"
-                                                 BorderThickness="0"
-                                                 IsIndeterminate="{Binding IsBusy}"
-                                                 Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                                </Grid>
-                            </DataTemplate>
-                        </MenuItem.HeaderTemplate>
-                        <ItemsControl.ItemContainerStyle>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="Command"
-                                        Value="{Binding ElementName=RootMenu, Path=DataContext.NuGet.InstallPackageCommand}" />
-                                <Setter Property="CommandParameter"
-                                        Value="{Binding}" />
-                                <Setter Property="Icon"
-                                        Value="{Binding}" />
-                            </Style>
-                        </ItemsControl.ItemContainerStyle>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate DataType="{x:Type roslynPad:PackageData}">
-                                <TextBlock>
-                                    <Run Text="{Binding Id, Mode=OneTime}" />
-                                    <Run Text="{Binding Version, Mode=OneTime}" />
-                                </TextBlock>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.Resources>
-                            <DataTemplate DataType="{x:Type roslynPad:PackageData}">
-                                <Menu Background="Transparent"
-                                      ToolTip="Other versions">
-                                    <MenuItem ItemsSource="{Binding OtherVersions}"
-                                              DisplayMemberPath="Version"
-                                              Padding="2">
-                                        <MenuItem.Header>
-                                            <TextBlock FontWeight="Bold"
-                                                       FontFamily="Segoe UI Symbol"
-                                                       Text=""
-                                                       FontSize="8" />
-                                        </MenuItem.Header>
-                                        <ItemsControl.ItemContainerStyle>
-                                            <Style TargetType="MenuItem">
-                                                <Setter Property="Command"
-                                                        Value="{Binding ElementName=RootMenu, Path=DataContext.NuGet.InstallPackageCommand}" />
-                                                <Setter Property="CommandParameter"
-                                                        Value="{Binding}" />
-                                            </Style>
-                                        </ItemsControl.ItemContainerStyle>
-                                    </MenuItem>
-                                </Menu>
-                            </DataTemplate>
-                        </ItemsControl.Resources>
-                    </MenuItem>
-                </Menu>
-                <TextBox Name="SearchTerm"
-                         IsEnabled="{Binding NuGet.IsEnabled}"
-                         BorderBrush="#eee"
-                         Text="{Binding NuGet.SearchTerm, Delay=500, UpdateSourceTrigger=PropertyChanged}"
-                         Width="200" />
-                <Decorator VerticalAlignment="Center">
-                    <CheckBox IsChecked="{Binding NuGet.ExactMatch}"
-                              Content="Exact" />
-                </Decorator>
-            </ToolBar>
             <editor:CodeTextEditor x:Name="Editor"
                                    x:FieldModifier="private"
                                    FontFamily="Consolas"
@@ -170,8 +66,6 @@
                                     Background="Transparent"
                                     BorderBrush="Transparent"
                                     Command="{Binding CopyCommand}">
-                                <Image Source="{StaticResource Copy}"
-                                       Height="12" />
                             </Button>
                             <TextBlock Text="{Binding Header}" />
                         </DockPanel>
