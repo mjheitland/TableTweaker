@@ -1,6 +1,10 @@
-﻿using System;
+﻿// To use C# Scripting import nuget package Microsoft.CodeAnalysis.CSharp.Scripting
+// https://blogs.msdn.microsoft.com/cdndevs/2015/12/01/adding-c-scripting-to-your-development-arsenal-part-1/
+using System;
 using System.Text;
-using Roslyn.Scripting.CSharp;
+using System.Xml;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
 
 namespace TableTweaker.Model
 {
@@ -22,11 +26,13 @@ namespace TableTweaker.Model
 
         #endregion Singleton
 
+        private readonly ScriptOptions _scriptOptions = ScriptOptions.Default
+            .AddReferences(typeof(XmlDocument).Assembly)
+            .AddImports("System.Xml", "System");
+
         public char FieldDelimiter { get; set; } = ',';
 
         public bool QuotedFields { get; set; } = true;
-
-        private readonly ScriptEngine _scriptEngine = new ScriptEngine();
 
         public string Process(Table table, string pattern, string code)
         {
@@ -170,7 +176,7 @@ namespace TableTweaker.Model
                             ProcessSection(table, rowNo, rowNo + 1, argsTokens, "", argsOutput);
                             var encodedArgs = EncodeQuotationMark(argsOutput.ToString());
 
-                            var methodCall = $"{methodName}({encodedArgs});";
+                            var methodCall = $"{methodName}({encodedArgs})"; // without terminating ";" to signal scripting engine that it should return the value!
 
                             var result = ScriptCSharpCode(code + methodCall);
 
@@ -218,8 +224,7 @@ namespace TableTweaker.Model
 
         public string ScriptCSharpCode(string code)
         {
-            var session = _scriptEngine.CreateSession();
-            var result = session.Execute(code) as string;
+            var result = CSharpScript.EvaluateAsync<string>(code, _scriptOptions).Result;
             return result;
         }
 
