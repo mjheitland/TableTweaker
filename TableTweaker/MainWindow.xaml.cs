@@ -6,11 +6,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using ICSharpCode.AvalonEdit.Highlighting;
-using TableTweaker.Editor;
 using TableTweaker.Model;
 using TableTweaker.Properties;
-using TableTweaker.Roslyn;
 using TableTweaker.Utilities;
+using RoslynPad.Roslyn;
+using RoslynPad.RoslynEditor;
 using Table = TableTweaker.Model.Table;
 
 namespace TableTweaker
@@ -69,7 +69,7 @@ namespace TableTweaker
 
             _interactiveManager = new InteractiveManager();
             _interactiveManager.SetDocument(Editor.AsTextContainer());
-            Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_interactiveManager);
+            Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_interactiveManager, new RoslynHost());
 
             var helpContent = File.ReadAllText(@"Content\help.html");
             Help.NavigateToString(helpContent);
