@@ -8,7 +8,6 @@ using System.Windows.Media;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Document;
 using Microsoft.CodeAnalysis;
-using RoslynPad;
 using RoslynPad.Editor;
 using RoslynPad.Roslyn;
 using RoslynPad.Roslyn.Diagnostics;
@@ -48,6 +47,7 @@ namespace TableTweaker
         private async void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args)
         {
             _viewModel = (OpenDocumentViewModel)args.NewValue;
+            _viewModel.NuGet.PackageInstalled += NuGetOnPackageInstalled;
             _roslynHost = _viewModel.MainViewModel.RoslynHost;
 
             var avalonEditTextContainer = new AvalonEditTextContainer(Editor);
@@ -58,10 +58,7 @@ namespace TableTweaker
                 text => avalonEditTextContainer.UpdateText(text)
                 ).ConfigureAwait(true);
 
-            var documentText = await _viewModel.LoadText().ConfigureAwait(true);
-            Editor.AppendText(documentText);
             Editor.Document.UndoStack.ClearAll();
-            Editor.Document.TextChanged += (o, e) => _viewModel.SetDirty(Editor.Document.TextLength);
 
             Editor.TextArea.TextView.LineTransformers.Insert(0, new RoslynHighlightingColorizer(_viewModel.DocumentId, _roslynHost));
 
@@ -69,6 +66,19 @@ namespace TableTweaker
             _contextActionsRenderer.Providers.Add(new RoslynContextActionProvider(_viewModel.DocumentId, _roslynHost));
 
             Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_viewModel.DocumentId, _roslynHost);
+        }
+
+        private void NuGetOnPackageInstalled(NuGetInstallResult installResult)
+        {
+            if (installResult.References.Count == 0) return;
+
+            var text = string.Join(Environment.NewLine,
+                installResult.References.Distinct().Select(r => Path.Combine(MainViewModel.NuGetPathVariableName, r))
+                .Concat(installResult.FrameworkReferences.Distinct())
+                .Where(r => !_roslynHost.HasReference(_viewModel.DocumentId, r))
+                .Select(r => "#r \"" + r + "\"")) + Environment.NewLine;
+
+            Dispatcher.InvokeAsync(() => Editor.Document.Insert(0, text, AnchorMovementType.Default));
         }
 
         private void ProcessDiagnostics(DiagnosticsUpdatedArgs args)

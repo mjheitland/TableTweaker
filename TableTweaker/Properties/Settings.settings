@@ -1,7 +1,43 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TableTweaker.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RoslynPad.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
+    <Setting Name="SendErrors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LatestVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowBounds" Type="System.Windows.Rect" Scope="User">
+      <Value Profile="(Default)">0,0,0,0</Value>
+    </Setting>
+    <Setting Name="DockLayout" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowState" Type="System.Windows.WindowState" Scope="User">
+      <Value Profile="(Default)">Minimized</Value>
+    </Setting>
+    <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxDelimiteIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxQualifierIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxFiltersValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.+</Value>
+    </Setting>
+    <Setting Name="CbxFontSizeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="CbxLineWrapIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxResultGridColumnsIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
     <Setting Name="LastSessionCode" Type="System.String" Scope="User">
       <Value Profile="(Default)">using System;
 public string FormatDate(string date, string format)
@@ -50,27 +86,6 @@ Hello $1 $0,
 I'm sorry to inform you of a terrible accident at $2.
 ---
 </Value>
-    </Setting>
-    <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="CbxDelimiteIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="CbxQualifierIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="CbxFiltersValue" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.+</Value>
-    </Setting>
-    <Setting Name="CbxFontSizeIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">4</Value>
-    </Setting>
-    <Setting Name="CbxLineWrapIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="CbxResultGridColumnsIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="LastSessionInput" Type="System.String" Scope="User">
       <Value Profile="(Default)">Last Name,First Name,Company

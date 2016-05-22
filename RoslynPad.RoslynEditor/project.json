@@ -1,0 +1,15 @@
+﻿{
+  "frameworks": {
+    "net46": { }
+  },
+  "runtimes": {
+    "win": { }
+  },
+  "dependencies": {
+    "Microsoft.CodeAnalysis.CSharp": "1.2.0",
+    "Microsoft.CodeAnalysis.EditorFeatures": "1.2.0",
+    "Microsoft.CodeAnalysis.CSharp.Workspaces": "1.2.0",
+    "Microsoft.CodeAnalysis.CSharp.Scripting": "1.2.0",
+    "AvalonEdit": "5.0.2"
+  }
+}

@@ -9,7 +9,6 @@ using System.Windows.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.Text;
-using RoslynPad;
 using RoslynPad.Host;
 using RoslynPad.Roslyn.Diagnostics;
 using RoslynPad.Runtime;
@@ -29,9 +28,7 @@ namespace TableTweaker
         private int _runToken;
         private Action<object> _executionHostOnDumped;
         private readonly object _resultsLock;
-        private bool _isDirty;
         private Platform _platform;
-        private bool _isSaving;
 
         public ObservableCollection<ResultObjectViewModel> Results
         {
@@ -39,21 +36,18 @@ namespace TableTweaker
             private set { SetProperty(ref _results, value); }
         }
 
-        public DocumentViewModel Document { get; private set; }
+        public DocumentViewModel Document { get; }
 
         public OpenDocumentViewModel(MainViewModel mainViewModel, DocumentViewModel document)
         {
             Document = document;
             MainViewModel = mainViewModel;
+            NuGet = new NuGetDocumentViewModel(mainViewModel.NuGet);
             _dispatcher = Dispatcher.CurrentDispatcher;
 
             var roslynHost = mainViewModel.RoslynHost;
 
-            IsDirty = document?.IsAutoSave == true;
-
-            _workingDirectory = Document != null
-                ? Path.GetDirectoryName(Document.Path)
-                : MainViewModel.DocumentRoot.Path;
+            _workingDirectory = Directory.GetCurrentDirectory();
 
             Platform = Platform.X86;
             _executionHost = new ExecutionHost(GetHostExeName(), _workingDirectory,
@@ -65,7 +59,6 @@ namespace TableTweaker
             Results = new ObservableCollection<ResultObjectViewModel>();
             BindingOperations.EnableCollectionSynchronization(Results, _resultsLock);
 
-            SaveCommand = new DelegateCommand(() => Save(promptSave: false));
             RunCommand = new DelegateCommand(Run, () => !IsRunning);
             RestartHostCommand = new DelegateCommand(RestartHost);
         }
@@ -119,89 +112,6 @@ namespace TableTweaker
             _dispatcher.InvokeAsync(() => IsRunning = value);
         }
 
-        public async Task AutoSave()
-        {
-            if (!IsDirty) return;
-            if (Document == null)
-            {
-                var index = 1;
-                string path;
-                do
-                {
-                    path = Path.Combine(_workingDirectory, DocumentViewModel.GetAutoSaveName("Program" + index++));
-                } while (File.Exists(path));
-                Document = DocumentViewModel.CreateAutoSave(MainViewModel, path);
-            }
-
-            await SaveDocument(Document.IsAutoSave ? Document.Path
-                // ReSharper disable once AssignNullToNotNullAttribute
-                : Path.Combine(Path.GetDirectoryName(Document.Path), DocumentViewModel.GetAutoSaveName(Document.Name))).ConfigureAwait(false);
-        }
-
-        public async Task<SaveResult> Save(bool promptSave)
-        {
-            if (_isSaving) return SaveResult.Cancel;
-            if (!IsDirty) return SaveResult.Save;
-
-            _isSaving = true;
-            try
-            {
-                var result = SaveResult.Save;
-                if (Document == null || Document.IsAutoSaveOnly)
-                {
-                    var dialog = new SaveDocumentDialog
-                    {
-                        ShowDontSave = promptSave,
-                        AllowNameEdit = true,
-                        FilePathFactory = s => DocumentViewModel.GetDocumentPathFromName(_workingDirectory, s)
-                    };
-                    dialog.Show();
-                    result = dialog.Result;
-                    if (result == SaveResult.Save)
-                    {
-                        if (Document?.IsAutoSave == true)
-                        {
-                            File.Delete(Document.Path);
-                        }
-                        Document = MainViewModel.AddDocument(dialog.DocumentName);
-                        OnPropertyChanged(nameof(Title));
-                    }
-                }
-                else if (promptSave)
-                {
-                    var dialog = new SaveDocumentDialog
-                    {
-                        ShowDontSave = true,
-                    };
-                    dialog.Show();
-                    result = dialog.Result;
-                }
-                if (result == SaveResult.Save)
-                {
-                    // ReSharper disable once PossibleNullReferenceException
-                    await SaveDocument(Document.Path).ConfigureAwait(true);
-                    IsDirty = false;
-                }
-                return result;
-            }
-            finally
-            {
-                _isSaving = false;
-            }
-        }
-
-        private async Task SaveDocument(string path)
-        {
-            var text = await MainViewModel.RoslynHost.GetDocument(DocumentId).GetTextAsync().ConfigureAwait(false);
-            using (var writer = new StreamWriter(path, append: false))
-            {
-                foreach (var line in text.Lines)
-                {
-                    await writer.WriteLineAsync(line.ToString()).ConfigureAwait(false);
-                }
-            }
-        }
-
         public async Task Initialize(SourceTextContainer sourceTextContainer, Action<DiagnosticsUpdatedArgs> onDiagnosticsUpdated, Action<SourceText> onTextUpdated)
         {
             var roslynHost = MainViewModel.RoslynHost;
@@ -214,9 +124,9 @@ namespace TableTweaker
 
         public MainViewModel MainViewModel { get; }
 
-        public string Title => Document != null && !Document.IsAutoSaveOnly ? Document.Name : "New";
+        public NuGetDocumentViewModel NuGet { get; }
 
-        public DelegateCommand SaveCommand { get; }
+        public string Title => Document != null && !Document.IsAutoSaveOnly ? Document.Name : "New";
 
         public DelegateCommand RunCommand { get; }
 
@@ -237,8 +147,6 @@ namespace TableTweaker
         private async Task Run()
         {
             Reset();
-
-            await MainViewModel.AutoSaveOpenDocuments().ConfigureAwait(false);
 
             SetIsRunning(true);
 
@@ -296,33 +204,10 @@ namespace TableTweaker
             }, DispatcherPriority.SystemIdle, cancellationToken);
         }
 
-        public async Task<string> LoadText()
-        {
-            if (Document == null)
-            {
-                return string.Empty;
-            }
-            using (var fileStream = new StreamReader(Document.Path))
-            {
-                return await fileStream.ReadToEndAsync().ConfigureAwait(false);
-            }
-        }
-
         public void Close()
         {
             _executionHost?.Dispose();
             _executionHost = null;
-        }
-
-        public bool IsDirty
-        {
-            get { return _isDirty; }
-            private set { SetProperty(ref _isDirty, value); }
-        }
-
-        public void SetDirty(int textLength)
-        {
-            IsDirty = textLength > 0;
         }
     }
 }

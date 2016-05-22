@@ -4,74 +4,30 @@
              xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Common"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:roslynPad="clr-namespace:TableTweaker"
-             xmlns:codeAnalysis="clr-namespace:Microsoft.CodeAnalysis;assembly=Microsoft.CodeAnalysis"
+             xmlns:tableTweaker="clr-namespace:TableTweaker"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance roslynPad:OpenDocumentViewModel}">
+             d:DataContext="{d:DesignInstance tableTweaker:OpenDocumentViewModel}">
+
     <FrameworkElement.InputBindings>
-        <KeyBinding Key="F5"
-                    Command="{Binding RunCommand}" />
-        <KeyBinding Gesture="Shift+F5"
-                    Command="{Binding RestartHostCommand}" />
-        <KeyBinding Gesture="Ctrl+S"
-                    Command="{Binding SaveCommand}" />
+        <KeyBinding Key="F5" Command="{Binding RunCommand}" />
+        <KeyBinding Gesture="Shift+F5" Command="{Binding RestartHostCommand}" />
     </FrameworkElement.InputBindings>
-    <FrameworkElement.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </FrameworkElement.Resources>
+
     <DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock DataContext="{Binding ElementName=Editor, Path=TextArea.Caret.Position}">
+                <TextBlock DataContext=
+                    "{Binding ElementName=Editor, Path=TextArea.Caret.Position}">
                     Ln <Run Text="{Binding Line}" /> 
                     Col <Run Text="{Binding Column}" />
                 </TextBlock>
             </StatusBarItem>
         </StatusBar>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition />
-                <RowDefinition Height="5" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <editor:CodeTextEditor x:Name="Editor"
+    
+        <editor:CodeTextEditor x:Name="Editor"
                                    x:FieldModifier="private"
                                    FontFamily="Consolas"
-                                   Grid.Row="1"
-                                   Grid.Column="0"
                                    KeyDown="Editor_OnKeyDown"
                                    Loaded="Editor_OnLoaded" />
-            <GridSplitter Grid.Row="2"
-                          Grid.Column="0"
-                          Background="#ccc"
-                          ResizeBehavior="PreviousAndNext"
-                          ResizeDirection="Rows"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch" />
-
-            <TreeView ItemsSource="{Binding Results}"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      VirtualizingPanel.IsVirtualizing="True"
-                      VirtualizingPanel.VirtualizationMode="Recycling"
-                      Grid.Column="0"
-                      Grid.Row="3">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                        <DockPanel>
-                            <Button Padding="0"
-                                    Margin="0 0 5 0"
-                                    VerticalAlignment="Top"
-                                    KeyboardNavigation.IsTabStop="False"
-                                    Background="Transparent"
-                                    BorderBrush="Transparent"
-                                    Command="{Binding CopyCommand}">
-                            </Button>
-                            <TextBlock Text="{Binding Header}" />
-                        </DockPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>
-        </Grid>
     </DockPanel>
 </UserControl>

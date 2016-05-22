@@ -25,63 +25,61 @@ namespace TableTweaker.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"using System;
-public string FormatDate(string date, string format)
-{
-  return DateTime.Parse(date).ToString(format);
-}
-public string IndexOf(string s, string value)
-{
-  return s.IndexOf(value).ToString();
-}
-public string Left(string s, int length)
-{
-  return string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length < s.Length ) ? length : s.Length);
-}
-public string Right(string s, int length)
-{
-  return string.IsNullOrEmpty(s) ? string.Empty : ((s.Length > length) ? s.Substring(s.Length - length, length) : s);
-}
-public string Replace(string s, string oldValue, string newValue)
-{
-  return s.Replace(oldValue, newValue);
-}
-public string Substring(string s, int startIndex, int length)
-{
-  return s.Substring(startIndex, length);
-}
-public string ToLower(string s)
-{
-  return s.ToLower();
-}
-public string ToUpper(string s)
-{
-  return s.ToUpper();
-}
-public string Trim(string s, string trimString)
-{
-  return s.Trim(trimString.ToCharArray());
-}
-")]
-        public string LastSessionCode {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SendErrors {
             get {
-                return ((string)(this["LastSessionCode"]));
+                return ((bool)(this["SendErrors"]));
             }
             set {
-                this["LastSessionCode"] = value;
+                this["SendErrors"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("$EACH+\r\n$rowNum\r\nTo: $ToLower(\"$1.$0@$2.com\")\r\nHello $1 $0,\r\nI\'m sorry to inform " +
-            "you of a terrible accident at $2.\r\n---\r\n")]
-        public string LastSessionPattern {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LatestVersion {
             get {
-                return ((string)(this["LastSessionPattern"]));
+                return ((string)(this["LatestVersion"]));
             }
             set {
-                this["LastSessionPattern"] = value;
+                this["LatestVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0,0,0,0")]
+        public global::System.Windows.Rect WindowBounds {
+            get {
+                return ((global::System.Windows.Rect)(this["WindowBounds"]));
+            }
+            set {
+                this["WindowBounds"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DockLayout {
+            get {
+                return ((string)(this["DockLayout"]));
+            }
+            set {
+                this["DockLayout"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Minimized")]
+        public global::System.Windows.WindowState WindowState {
+            get {
+                return ((global::System.Windows.WindowState)(this["WindowState"]));
+            }
+            set {
+                this["WindowState"] = value;
             }
         }
         
@@ -171,8 +169,70 @@ public string Trim(string s, string trimString)
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\r\nCook,Tim,Apple\r\nNadella,Satya,Microsoft\r\nDrury,Rod," +
-            "Xero\r\nZuckerberg,Mark,Facebook\r\nPage,Larry,Google\r\n")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"using System;
+public string FormatDate(string date, string format)
+{
+  return DateTime.Parse(date).ToString(format);
+}
+public string IndexOf(string s, string value)
+{
+  return s.IndexOf(value).ToString();
+}
+public string Left(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length < s.Length ) ? length : s.Length);
+}
+public string Right(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : ((s.Length > length) ? s.Substring(s.Length - length, length) : s);
+}
+public string Replace(string s, string oldValue, string newValue)
+{
+  return s.Replace(oldValue, newValue);
+}
+public string Substring(string s, int startIndex, int length)
+{
+  return s.Substring(startIndex, length);
+}
+public string ToLower(string s)
+{
+  return s.ToLower();
+}
+public string ToUpper(string s)
+{
+  return s.ToUpper();
+}
+public string Trim(string s, string trimString)
+{
+  return s.Trim(trimString.ToCharArray());
+}
+")]
+        public string LastSessionCode {
+            get {
+                return ((string)(this["LastSessionCode"]));
+            }
+            set {
+                this["LastSessionCode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("$EACH+\n$rowNum\nTo: $ToLower(\"$1.$0@$2.com\")\nHello $1 $0,\nI\'m sorry to inform you " +
+            "of a terrible accident at $2.\n---\r\n")]
+        public string LastSessionPattern {
+            get {
+                return ((string)(this["LastSessionPattern"]));
+            }
+            set {
+                this["LastSessionPattern"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\nCook,Tim,Apple\nNadella,Satya,Microsoft\nDrury,Rod,Xer" +
+            "o\nZuckerberg,Mark,Facebook\nPage,Larry,Google\r\n")]
         public string LastSessionInput {
             get {
                 return ((string)(this["LastSessionInput"]));
