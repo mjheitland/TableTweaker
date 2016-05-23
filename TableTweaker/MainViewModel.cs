@@ -138,7 +138,7 @@ namespace TableTweaker
             if (!Directory.Exists(Path.Combine(root.Path, "Samples")))
             {
                 // ReSharper disable once PossibleNullReferenceException
-                using (var stream = Application.GetResourceStream(new Uri("pack://application:,,,/RoslynPad;component/Resources/Samples.zip")).Stream)
+                using (var stream = Application.GetResourceStream(new Uri("pack://application:,,,/TableTweaker;component/Resources/Samples.zip")).Stream)
                 using (var archive = new ZipArchive(stream))
                 {
                     archive.ExtractToDirectory(root.Path);
