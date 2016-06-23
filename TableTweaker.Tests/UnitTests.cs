@@ -411,6 +411,26 @@ namespace TableTweaker.Tests
             Assert.Equal(HeaderAndThreeRowsAllTokenPatternOutput, output);
         }
 
+        [Fact]
+        [Trait("Category", "Engine")]
+        public void CopyQuotationMarkEngineTest()
+        {
+            var engine = Engine.Instance;
+            var table = new Table("A\"B", CommaFieldDelimitter, false, "");
+            var output = engine.Process(table, "$0", MyCode);
+            Assert.Equal("A\"B", output);
+        }
+
+        [Fact]
+        [Trait("Category", "Engine")]
+        public void ProcessQuotationMarkEngineTest()
+        {
+            var engine = Engine.Instance;
+            var table = new Table("A\"B", CommaFieldDelimitter, false, "");
+            var output = engine.Process(table, "$ToLower(\"$0\")", "public static string ToLower(string s) { return s.ToLower(); }");
+            Assert.Equal("a\"b", output);
+        }
+
         #endregion EngineTests
     }
 }
