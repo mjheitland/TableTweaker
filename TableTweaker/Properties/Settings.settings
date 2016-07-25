@@ -1,21 +1,9 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RoslynPad.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TableTweaker.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SendErrors" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="LatestVersion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="WindowBounds" Type="System.Windows.Rect" Scope="User">
-      <Value Profile="(Default)">0,0,0,0</Value>
-    </Setting>
-    <Setting Name="DockLayout" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="WindowState" Type="System.Windows.WindowState" Scope="User">
-      <Value Profile="(Default)">Minimized</Value>
     </Setting>
     <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>

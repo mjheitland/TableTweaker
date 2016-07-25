@@ -11,8 +11,7 @@
         TextOptions.TextFormattingMode="Display"
         UseLayoutRounding="True"
         Title="TableTweaker"
-        Height="600"
-        Width="800"
+        WindowState="Maximized"
         Name="This">
 
     <FrameworkElement.Resources>
