@@ -5,7 +5,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -20,10 +19,7 @@ namespace TableTweaker
     {
         private static readonly Version _currentVersion = new Version(0, 8);
 
-        private const string ApplicationInsightsInstrumentationKey = "86551688-26d9-4124-8376-3f7ddcf84b8e";
         public const string NuGetPathVariableName = "$NuGet";
-
-        private readonly TelemetryClient _telemetryClient;
 
         private OpenDocumentViewModel _currentOpenDocument;
         private Exception _lastError;
@@ -35,16 +31,6 @@ namespace TableTweaker
 
         public MainViewModel()
         {
-            _telemetryClient = new TelemetryClient { InstrumentationKey = ApplicationInsightsInstrumentationKey };
-            _telemetryClient.Context.Component.Version = _currentVersion.ToString();
-#if DEBUG
-            _telemetryClient.Context.Properties["DEBUG"] = "1";
-#endif
-            if (SendTelemetry)
-            {
-                _telemetryClient.TrackEvent(TelemetryEventNames.Start);
-            }
-
             Application.Current.DispatcherUnhandledException += (o, e) => OnUnhandledDispatcherException(e);
             AppDomain.CurrentDomain.UnhandledException += (o, e) => OnUnhandledException((Exception)e.ExceptionObject, flushSync: true);
             TaskScheduler.UnobservedTaskException += (o, e) => OnUnhandledException(e.Exception);
@@ -56,7 +42,6 @@ namespace TableTweaker
 
             NewDocumentCommand = new DelegateCommand((Action)CreateNewDocument);
             ClearErrorCommand = new DelegateCommand(() => LastError = null);
-            ReportProblemCommand = new DelegateCommand((Action)ReportProblem);
 
             DocumentRoot = CreateDocumentRoot();
             Documents = DocumentRoot.Children;
@@ -79,12 +64,6 @@ namespace TableTweaker
             {
                 Task.Run(CheckForUpdates);
             }
-        }
-
-        private void ReportProblem()
-        {
-            var dialog = new ReportProblemDialog(this);
-            dialog.Show();
         }
 
         public IEnumerable<OpenDocumentViewModel> LoadAutoSaves(string root)
@@ -182,7 +161,6 @@ namespace TableTweaker
         private void OnUnhandledException(Exception exception, bool flushSync = false)
         {
             if (exception is OperationCanceledException) return;
-            TrackException(exception, flushSync);
         }
 
         private void OnUnhandledDispatcherException(DispatcherUnhandledExceptionEventArgs args)
@@ -193,32 +171,8 @@ namespace TableTweaker
                 args.Handled = true;
                 return;
             }
-            TrackException(exception);
             LastError = exception;
             args.Handled = true;
-        }
-
-        private void TrackException(Exception exception, bool flushSync = false)
-        {
-            // ReSharper disable once RedundantLogicalConditionalExpressionOperand
-            if (SendTelemetry && ApplicationInsightsInstrumentationKey != null)
-            {
-                var typeLoadException = exception as ReflectionTypeLoadException;
-                if (typeLoadException != null)
-                {
-                    exception = new AggregateException(exception.Message, typeLoadException.LoaderExceptions);
-                }
-                _telemetryClient.TrackException(exception);
-                if (flushSync)
-                {
-                    _telemetryClient.Flush();
-                }
-                // TODO: check why this freezes the UI
-                //else
-                //{
-                //    Task.Run(() => _telemetryClient.Value.Flush());
-                //}
-            }
         }
 
         public Exception LastError
@@ -235,17 +189,6 @@ namespace TableTweaker
 
         public DelegateCommand ClearErrorCommand { get; }
 
-        public bool SendTelemetry
-        {
-            get { return Properties.Settings.Default.SendErrors; }
-            set
-            {
-                Properties.Settings.Default.SendErrors = value;
-                Properties.Settings.Default.Save();
-                OnPropertyChanged(nameof(SendTelemetry));
-            }
-        }
-
         public ChildProcessManager ChildProcessManager { get; }
 
         public bool HasNoOpenDocuments => OpenDocuments.Count == 0;
@@ -255,19 +198,6 @@ namespace TableTweaker
         public DocumentViewModel AddDocument(string documentName)
         {
             return DocumentRoot.CreateNew(documentName);
-        }
-
-        public Task SubmitFeedback(string feedbackText, string email)
-        {
-            return Task.Run(() =>
-            {
-                _telemetryClient.TrackEvent(TelemetryEventNames.Feedback, new Dictionary<string, string>
-                {
-                    ["Content"] = feedbackText,
-                    ["Email"] = email
-                });
-                _telemetryClient.Flush();
-            });
         }
 
         [Serializable]
