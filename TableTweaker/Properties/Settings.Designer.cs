@@ -158,7 +158,7 @@ public string Trim(string s, string trimString)
 {
   return s.Trim(trimString.ToCharArray());
 }
-")]
+                ")]
         public string LastSessionCode {
             get {
                 return ((string)(this["LastSessionCode"]));
@@ -171,7 +171,7 @@ public string Trim(string s, string trimString)
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("$EACH+\n$rowNum\nTo: $ToLower(\"$1.$0@$2.com\")\nHello $1 $0,\nI\'m sorry to inform you " +
-            "of a terrible accident at $2.\n---\r\n")]
+            "of a terrible accident at $2.\n---\n                ")]
         public string LastSessionPattern {
             get {
                 return ((string)(this["LastSessionPattern"]));
@@ -184,7 +184,7 @@ public string Trim(string s, string trimString)
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Last Name,First Name,Company\nCook,Tim,Apple\nNadella,Satya,Microsoft\nDrury,Rod,Xer" +
-            "o\nZuckerberg,Mark,Facebook\nPage,Larry,Google\r\n")]
+            "o\nZuckerberg,Mark,Facebook\nPage,Larry,Google")]
         public string LastSessionInput {
             get {
                 return ((string)(this["LastSessionInput"]));

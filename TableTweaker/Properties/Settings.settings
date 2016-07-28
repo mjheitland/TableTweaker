@@ -64,7 +64,7 @@ public string Trim(string s, string trimString)
 {
   return s.Trim(trimString.ToCharArray());
 }
-</Value>
+                </Value>
     </Setting>
     <Setting Name="LastSessionPattern" Type="System.String" Scope="User">
       <Value Profile="(Default)">$EACH+
@@ -73,7 +73,7 @@ To: $ToLower("$1.$0@$2.com")
 Hello $1 $0,
 I'm sorry to inform you of a terrible accident at $2.
 ---
-</Value>
+                </Value>
     </Setting>
     <Setting Name="LastSessionInput" Type="System.String" Scope="User">
       <Value Profile="(Default)">Last Name,First Name,Company
@@ -81,8 +81,7 @@ Cook,Tim,Apple
 Nadella,Satya,Microsoft
 Drury,Rod,Xero
 Zuckerberg,Mark,Facebook
-Page,Larry,Google
-</Value>
+Page,Larry,Google</Value>
     </Setting>
   </Settings>
 </SettingsFile>
