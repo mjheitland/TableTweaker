@@ -203,7 +203,7 @@ namespace TableTweaker.Model
 
         private static string EncodeQuotationMark(string s)
         {
-            if (string.IsNullOrEmpty(s) || s.Length <= 2 || s[0] != '\"' || s[s.Length - 1] != '\"')
+            if (string.IsNullOrEmpty(s) || s.Length < 2 || s[0] != '\"' || s[s.Length - 1] != '\"')
                 throw new Exception($"Internal error, invalid args ({s ?? ""})");
 
             return $"\"{s.Substring(1, s.Length - 2).Replace("\"", "\\\"")}\"";
