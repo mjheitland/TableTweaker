@@ -158,7 +158,11 @@ public string Trim(string s, string trimString)
 {
   return s.Trim(trimString.ToCharArray());
 }
-                ")]
+public string ToDbValue (string s)
+{
+    return s == ""NULL"" ? ""NULL"" : ""'"" + (s ?? """") + ""'"";
+}
+")]
         public string LastSessionCode {
             get {
                 return ((string)(this["LastSessionCode"]));
