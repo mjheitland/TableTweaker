@@ -134,8 +134,7 @@ namespace RoslynPad.Roslyn
         {
             if (diagnosticsUpdatedArgs?.DocumentId == null) return;
 
-            Action<DiagnosticsUpdatedArgs> notifier;
-            if (_diagnosticsUpdatedNotifiers.TryGetValue(diagnosticsUpdatedArgs.DocumentId, out notifier))
+            if (_diagnosticsUpdatedNotifiers.TryGetValue(diagnosticsUpdatedArgs.DocumentId, out Action<DiagnosticsUpdatedArgs> notifier))
             {
                 notifier(diagnosticsUpdatedArgs);
             }
@@ -156,8 +155,7 @@ namespace RoslynPad.Roslyn
 
         private async void OnOpenedDocumentSemanticChanged(object sender, Document document)
         {
-            RoslynWorkspace workspace;
-            if (_workspaces.TryGetValue(document.Id, out workspace))
+            if (_workspaces.TryGetValue(document.Id, out RoslynWorkspace workspace))
             {
                 await workspace.ProcessReferenceDirectives(document).ConfigureAwait(false);
             }
@@ -179,8 +177,7 @@ namespace RoslynPad.Roslyn
 
         public bool HasReference(DocumentId documentId, string text)
         {
-            RoslynWorkspace workspace;
-            if (_workspaces.TryGetValue(documentId, out workspace) && workspace.HasReference(text))
+            if (_workspaces.TryGetValue(documentId, out RoslynWorkspace workspace) && workspace.HasReference(text))
             {
                 return true;
             }
@@ -237,20 +234,17 @@ namespace RoslynPad.Roslyn
 
         public void CloseDocument(DocumentId documentId)
         {
-            RoslynWorkspace workspace;
-            if (_workspaces.TryGetValue(documentId, out workspace))
+            if (_workspaces.TryGetValue(documentId, out RoslynWorkspace workspace))
             {
                 workspace.Dispose();
                 _workspaces.TryRemove(documentId, out workspace);
             }
-            Action<DiagnosticsUpdatedArgs> notifier;
-            _diagnosticsUpdatedNotifiers.TryRemove(documentId, out notifier);
+            _diagnosticsUpdatedNotifiers.TryRemove(documentId, out Action<DiagnosticsUpdatedArgs> notifier);
         }
 
         public Document GetDocument(DocumentId documentId)
         {
-            RoslynWorkspace workspace;
-            return _workspaces.TryGetValue(documentId, out workspace) ? workspace.CurrentSolution.GetDocument(documentId) : null;
+            return _workspaces.TryGetValue(documentId, out RoslynWorkspace workspace) ? workspace.CurrentSolution.GetDocument(documentId) : null;
         }
 
         public DocumentId AddDocument([NotNull] SourceTextContainer sourceTextContainer, [NotNull] string workingDirectory, Action<DiagnosticsUpdatedArgs> onDiagnosticsUpdated, Action<SourceText> onTextUpdated)
