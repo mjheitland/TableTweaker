@@ -33,8 +33,8 @@ namespace TableTweaker
 {
     internal sealed class NuGetViewModel : NotificationObject
     {
-        private const string TargetFrameworkName = "net46";
-        private const string TargetFrameworkFullName = ".NET Framework, Version=4.6";
+        private const string TargetFrameworkName = "net472";
+        private const string TargetFrameworkFullName = ".NET Framework, Version=4.7.2";
         private const int MaxSearchResults = 50;
 
         private readonly ISettings _settings;

@@ -169,8 +169,10 @@ namespace RoslynPad.Roslyn
         #endregion
 
         #region Reference Resolution
-        
+
+#pragma warning disable IDE0060 // Remove unused parameter
         internal void AddMetadataReference(ProjectId projectId, AssemblyIdentity assemblyIdentity)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             // TODO
         }

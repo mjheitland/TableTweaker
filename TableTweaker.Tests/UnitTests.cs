@@ -167,7 +167,7 @@ namespace TableTweaker.Tests
             var scanner = new Scanner("");
             var tokens = scanner.GetAllTokens();
             Assert.NotNull(tokens);
-            Assert.Equal(1, tokens.Count);
+            Assert.Single(tokens);
             Assert.Equal(TokenCategory.EndOfInput, tokens[0].Category);
         }
 
