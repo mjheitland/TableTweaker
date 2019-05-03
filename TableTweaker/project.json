@@ -10,7 +10,6 @@
     "AvalonEdit": "5.0.4",
     "AvalonLibrary": "2.4.0",
     "Extended.Wpf.Toolkit": "3.5.0",
-    "Microsoft.ApplicationInsights.WindowsServer": "2.9.1",
     "Microsoft.CodeAnalysis.CSharp": "1.2.0",
     "Microsoft.CodeAnalysis.CSharp.Features": "1.2.0",
     "Microsoft.CodeAnalysis.CSharp.Scripting": "1.2.0",

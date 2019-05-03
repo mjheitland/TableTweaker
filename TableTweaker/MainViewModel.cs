@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Microsoft.ApplicationInsights;
 using RoslynPad.Host;
 using RoslynPad.Roslyn;
 using RoslynPad.Utilities;
@@ -80,8 +79,7 @@ namespace TableTweaker
 
         private static bool HasCachedUpdate()
         {
-            Version latestVersion;
-            return Version.TryParse(Properties.Settings.Default.LatestVersion, out latestVersion) &&
+            return Version.TryParse(Properties.Settings.Default.LatestVersion, out Version latestVersion) &&
                    latestVersion > _currentVersion;
         }
 
@@ -99,8 +97,7 @@ namespace TableTweaker
                     return;
                 }
             }
-            Version latestVersion;
-            if (Version.TryParse(latestVersionString, out latestVersion))
+            if (Version.TryParse(latestVersionString, out Version latestVersion))
             {
                 if (latestVersion > _currentVersion)
                 {
@@ -158,7 +155,9 @@ namespace TableTweaker
             CurrentOpenDocument = openDocument;
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
         private void OnUnhandledException(Exception exception, bool flushSync = false)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             if (exception is OperationCanceledException) return;
         }
