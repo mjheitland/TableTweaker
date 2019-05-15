@@ -36,7 +36,6 @@ namespace TableTweaker
                 Id = id;
             }
 
-
             public DocumentId Id { get; private set; }
 
             public bool IsReadOnly

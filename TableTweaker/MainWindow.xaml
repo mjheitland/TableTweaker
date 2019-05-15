@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
-        xmlns:tableTweaker="clr-namespace:TableTweaker"
         mc:Ignorable="d"
         Title="TableTweaker"
         FontSize="12">
@@ -136,8 +135,9 @@
             </ComboBox>
         </StackPanel>
 
+        
         <TabControl x:Name="TbcMain" Grid.Row="1" SelectionChanged="TbcMain_SelectionChanged">
-            <TabItem Header="Text">
+            <TabItem Header="Text" Name="TabText">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -255,7 +255,7 @@
             </TabItem>
 
 
-            <TabItem Header="Result">
+            <TabItem Header="Result" Name="TabResult">
                 <WebBrowser 
                     x:Name="MyWebBrowser"
                     Margin="0,-4,0,3.8">
@@ -263,54 +263,23 @@
             </TabItem>
 
 
-            <TabItem Header="Code"  >
+            <TabItem Header="Code" Name="TabCode" >
                 <DockPanel>
-                    <!--<StatusBar DockPanel.Dock="Bottom">
-                            <StatusBarItem>
-                                <TextBlock DataContext="{Binding ElementName=MyEditor, Path=TextArea.Caret.Position}">
-                                    Ln <Run Text="{Binding Line}" /> 
-                                    Col <Run Text="{Binding Column}" />
-                                </TextBlock>
-                            </StatusBarItem>
-                        </StatusBar>-->
-
-                    <!--<editor:CodeTextEditor 
-                            x:Name="Editor"
+                    <editor:RoslynCodeEditor 
+                            x:Name="MyCodeEditor"
                             x:FieldModifier="private"
                             FontFamily="Consolas"
-                            KeyDown="Editor_OnKeyDown"
-                            Loaded="Editor_OnLoaded" />-->
-                    <ScrollViewer Background="#eee">
-                        <ItemsControl Name="Items">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel>
-                                        <editor:RoslynCodeEditor 
-                                                 Name="MyEditor"
-                                                 ContextActionsIcon="{StaticResource Bulb}"
-                                                 FontFamily="Consolas"
-                                                 KeyDown="Editor_OnKeyDown"
-                                                 Loaded="Editor_OnLoaded"
-                                                 Margin="5"
-                                                 IsReadOnly="{Binding IsReadOnly}"
-                                                 HorizontalScrollBarVisibility="Disabled"
-                                                 VerticalScrollBarVisibility="Disabled"
-                                                 ShowLineNumbers="True" />
-                                        <TextBlock Text="{Binding Result}" TextWrapping="Wrap" />
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
+                            Loaded="Editor_OnLoaded" />
                 </DockPanel>
             </TabItem>
 
 
-            <TabItem Header="Help">
+            <TabItem Header="Help" Name="TabHelp">
                 <WebBrowser x:Name="Help"/>
             </TabItem>
         </TabControl>
 
+        
         <StackPanel Orientation="Horizontal" Grid.Row="2">
             <TextBlock x:Name="TblMessage" Margin="10,5,0,5">3 input rows, 6 output rows</TextBlock>
         </StackPanel>

@@ -7,18 +7,15 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
 using TableTweaker.Model;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Threading;
 using TableTweaker.Properties;
-using Table = TableTweaker.Model.Table;
-using RoslynPad.Roslyn.Diagnostics;
 using System.Linq;
 using TableTweaker.Utilities;
+
+using Table = TableTweaker.Model.Table;
 
 namespace TableTweaker
 {
@@ -30,15 +27,17 @@ namespace TableTweaker
     {
         #region Private Fields
 
-        private RoslynCodeEditor MyEditor { get; set; }
-
         private readonly Engine _engine = Engine.Instance;
-
-        private bool _windowIsInitialized = false;
 
         private readonly Stopwatch _stopwatch = new Stopwatch();
 
-        private Style _paragraphStyle;
+        private readonly Style _paragraphStyle;
+
+        private readonly ObservableCollection<DocumentViewModel> _documents;
+
+        private readonly RoslynHost _host;
+
+        private bool _windowIsInitialized = false;
 
         #endregion Private Fields
 
@@ -60,36 +59,30 @@ namespace TableTweaker
 
         public bool QuotedFields => (CbxQualifier.SelectedValue?.ToString().ToLower() ?? "") == "\"";
 
-        private readonly ObservableCollection<DocumentViewModel> _documents;
-
-        private RoslynHost _host;
-
         #endregion Properties
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _documents = new ObservableCollection<DocumentViewModel>();
-            Items.ItemsSource = _documents;
             Loaded += OnLoaded;
 
             _paragraphStyle = Resources["ParagraphWithNoMarginStyle"] as Style;
-        }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            Loaded -= OnLoaded;
+            _documents = new ObservableCollection<DocumentViewModel> { new DocumentViewModel(_host, null) };
 
             _host = new RoslynHost(additionalAssemblies: new[]
             {
                 Assembly.Load("RoslynPad.Roslyn.Windows"),
                 Assembly.Load("RoslynPad.Editor.Windows")
             });
+        }
 
-            AddNewDocument();
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= OnLoaded;
 
-            _paragraphStyle = Resources["ParagraphWithNoMarginStyle"] as Style;
+            ManageUserSettings();
 
             var helpContent = File.ReadAllText(@"Content\help.html");
             Help.NavigateToString(helpContent);
@@ -99,53 +92,22 @@ namespace TableTweaker
 
         private void Editor_OnLoaded(object sender, EventArgs e)
         {
-            MyEditor = (RoslynCodeEditor)sender;
-            MyEditor.Focus();
+            if (_windowIsInitialized)
+                return;
 
-            var viewModel = (DocumentViewModel)MyEditor.DataContext;
+            MyCodeEditor.DataContext = _documents[0];
+            var viewModel = (DocumentViewModel)MyCodeEditor.DataContext;
             var workingDirectory = Directory.GetCurrentDirectory();
-
-            var documentId = MyEditor.Initialize(
-                _host, 
+            var documentId = MyCodeEditor.Initialize(
+                _host,
                 new ClassificationHighlightColors(),
-                workingDirectory, 
+                workingDirectory,
                 Settings.Default.LastSessionCode);
-
             viewModel.Initialize(documentId);
 
-            ManageUserSettings();
+            _windowIsInitialized = true;
 
             Process();
-
-            _windowIsInitialized = true;
-        }
-
-        private void AddNewDocument(DocumentViewModel previous = null)
-        {
-            _documents.Add(new DocumentViewModel(_host, previous));
-        }
-
-        private /*async*/ void Editor_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.Key == Key.Enter)
-            //{
-            //    var editor = (RoslynCodeEditor)sender;
-            //    if (editor.IsCompletionWindowOpen)
-            //    {
-            //        return;
-            //    }
-
-            //    e.Handled = true;
-
-            //    var viewModel = (DocumentViewModel)editor.DataContext;
-            //    if (viewModel.IsReadOnly) return;
- 
-            //    viewModel.Text = editor.Text;
-            //    if (await viewModel.TrySubmit())
-            //    {
-            //        //AddNewDocument(viewModel);
-            //    }
-            //}
         }
 
         #region Methods
@@ -165,7 +127,7 @@ namespace TableTweaker
 
             SetText(TbxPattern, Settings.Default.LastSessionPattern);
             SetText(TbxInput, Settings.Default.LastSessionInput);
-            //MyEditor.Text = Settings.Default.LastSessionCode;
+            //MyCodeEditor.Text = Settings.Default.LastSessionCode;
 
             Application.Current.Exit += (sender, args) =>
             {
@@ -179,7 +141,7 @@ namespace TableTweaker
 
                 Settings.Default.LastSessionPattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
                 Settings.Default.LastSessionInput = new TextRange(TbxInput.Document.ContentStart, TbxInput.Document.ContentEnd).Text;
-                Settings.Default.LastSessionCode = MyEditor.Text;
+                Settings.Default.LastSessionCode = MyCodeEditor.Text;
 
                 Settings.Default.Save();
             };
@@ -205,7 +167,7 @@ namespace TableTweaker
 
                     var pattern = new TextRange(TbxPattern.Document.ContentStart, TbxPattern.Document.ContentEnd).Text;
 
-                    var code = MyEditor.Text;
+                    var code = MyCodeEditor.Text;
 
                     _stopwatch.Reset();
                     _stopwatch.Start();
@@ -476,89 +438,5 @@ namespace TableTweaker
         }
 
         #endregion // Result
-
-        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        //private readonly TextMarkerService _textMarkerService;
-        //// ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        //private ContextActionsRenderer _contextActionsRenderer;
-        //private readonly SynchronizationContext _syncContext;
-        //private RoslynHost _roslynHost;
-
-        /* mhei
-                    private OpenDocumentViewModel _viewModel;
-
-                    private async void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs args)
-                    {
-                        _viewModel = (OpenDocumentViewModel)args.NewValue;
-                        _viewModel.NuGet.PackageInstalled += NuGetOnPackageInstalled;
-                        _roslynHost = _viewModel.MainViewModel.RoslynHost;
-
-                        var avalonEditTextContainer = new AvalonEditTextContainer(Editor);
-
-                        await _viewModel.Initialize(
-                            avalonEditTextContainer,
-                            a => _syncContext.Post(o => ProcessDiagnostics(a), null),
-                            text => avalonEditTextContainer.UpdateText(text)
-                            ).ConfigureAwait(true);
-
-                        Editor.Document.UndoStack.ClearAll();
-
-                        Editor.TextArea.TextView.LineTransformers.Insert(0, new RoslynHighlightingColorizer(_viewModel.DocumentId, _roslynHost));
-
-                        _contextActionsRenderer = new ContextActionsRenderer(Editor, _textMarkerService);
-                        _contextActionsRenderer.Providers.Add(new RoslynContextActionProvider(_viewModel.DocumentId, _roslynHost));
-
-                        Editor.CompletionProvider = new RoslynCodeEditorCompletionProvider(_viewModel.DocumentId, _roslynHost);
-                    }
-
-                    private void NuGetOnPackageInstalled(NuGetInstallResult installResult)
-                    {
-                        if (installResult.References.Count == 0) return;
-
-                        var text = string.Join(Environment.NewLine,
-                            installResult.References.Distinct().Select(r => Path.Combine(MainViewModel.NuGetPathVariableName, r))
-                            .Concat(installResult.FrameworkReferences.Distinct())
-                            .Where(r => !_roslynHost.HasReference(_viewModel.DocumentId, r))
-                            .Select(r => "#r \"" + r + "\"")) + Environment.NewLine;
-
-                        Dispatcher.InvokeAsync(() => Editor.Document.Insert(0, text, AnchorMovementType.Default));
-                    }
-
-                    private void ProcessDiagnostics(DiagnosticsUpdatedArgs args)
-                    {
-                        _textMarkerService.RemoveAll(x => true);
-
-                        foreach (var diagnosticData in args.Diagnostics)
-                        {
-                            if (diagnosticData.Severity == DiagnosticSeverity.Hidden || diagnosticData.IsSuppressed)
-                            {
-                                continue;
-                            }
-
-                            var marker = _textMarkerService.TryCreate(diagnosticData.TextSpan.Start, diagnosticData.TextSpan.Length);
-                            if (marker != null)
-                            {
-                                marker.MarkerColor = GetDiagnosticsColor(diagnosticData);
-                                marker.ToolTip = diagnosticData.Message;
-                            }
-                        }
-                    }
-
-                    private static Color GetDiagnosticsColor(DiagnosticData diagnosticData)
-                    {
-                        switch (diagnosticData.Severity)
-                        {
-                            case DiagnosticSeverity.Info:
-                                return Colors.LimeGreen;
-                            case DiagnosticSeverity.Warning:
-                                return Colors.DodgerBlue;
-                            case DiagnosticSeverity.Error:
-                                return Colors.Red;
-                            default:
-                                throw new ArgumentOutOfRangeException();
-                        }
-                    }
-                    */
-
     }
 }
