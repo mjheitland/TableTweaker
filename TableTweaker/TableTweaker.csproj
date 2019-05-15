@@ -124,5 +124,11 @@
     <Content Include="Content\Logo.png" />
     <Content Include="Content\TextWindow.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TableTweaker.Model\TableTweaker.Model.csproj">
+      <Project>{3786ba53-8f30-44ad-8333-d27c2bfd698c}</Project>
+      <Name>TableTweaker.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
