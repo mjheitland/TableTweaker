@@ -86,6 +86,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Content\TableTweaker.pdf" />
+    <None Include="Content\TableTweaker.pptx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -112,6 +114,15 @@
     <PackageReference Include="RoslynPad.Editor.Windows">
       <Version>1.0.4</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\CodeWindow.png" />
+    <None Include="Content\help.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\HelpWindow.png" />
+    <Content Include="Content\Logo.png" />
+    <Content Include="Content\TextWindow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
