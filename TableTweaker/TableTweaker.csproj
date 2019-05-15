@@ -55,6 +55,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeActionsConverter.cs" />
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,9 +64,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utilities\ReferenceEqualityComparer.cs" />
+    <Compile Include="Utilities\WaitCursor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeActionsConverter.cs" />
+    <Compile Include="DocumentViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,9 @@
     </PackageReference>
     <PackageReference Include="RoslynPad.Editor.Windows">
       <Version>1.0.4</Version>
+    </PackageReference>
+    <PackageReference Include="RoslynPad.Roslyn">
+      <Version>2.4.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

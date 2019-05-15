@@ -1,7 +1,91 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="TableTweaker.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LatestVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CbxModeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxDelimiteIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxQualifierIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxFiltersValue" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.+</Value>
+    </Setting>
+    <Setting Name="CbxFontSizeIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="CbxLineWrapIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="CbxResultGridColumnsIndex" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LastSessionCode" Type="System.String" Scope="User">
+      <Value Profile="(Default)">using System;
+public string FormatDate(string date, string format)
+{
+  return DateTime.Parse(date).ToString(format);
+}
+public string IndexOf(string s, string value)
+{
+  return s.IndexOf(value).ToString();
+}
+public string Left(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : s.Substring(0, (length &lt; s.Length ) ? length : s.Length);
+}
+public string Right(string s, int length)
+{
+  return string.IsNullOrEmpty(s) ? string.Empty : ((s.Length &gt; length) ? s.Substring(s.Length - length, length) : s);
+}
+public string Replace(string s, string oldValue, string newValue)
+{
+  return s.Replace(oldValue, newValue);
+}
+public string Substring(string s, int startIndex, int length)
+{
+  return s.Substring(startIndex, length);
+}
+public string ToLower(string s)
+{
+  return s.ToLower();
+}
+public string ToUpper(string s)
+{
+  return s.ToUpper();
+}
+public string Trim(string s, string trimString)
+{
+  return s.Trim(trimString.ToCharArray());
+}
+public string ToDbValue (string s)
+{
+    return s == "NULL" ? "NULL" : "'" + (s ?? "") + "'";
+}
+</Value>
+    </Setting>
+    <Setting Name="LastSessionPattern" Type="System.String" Scope="User">
+      <Value Profile="(Default)">$EACH+
+$rowNum
+To: $ToLower("$1.$0@$2.com")
+Hello $1 $0,
+I'm sorry to inform you of a terrible accident at $2.
+---
+                </Value>
+    </Setting>
+    <Setting Name="LastSessionInput" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Last Name,First Name,Company
+Cook,Tim,Apple
+Nadella,Satya,Microsoft
+Drury,Rod,Xero
+Zuckerberg,Mark,Facebook
+Page,Larry,Google</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>
