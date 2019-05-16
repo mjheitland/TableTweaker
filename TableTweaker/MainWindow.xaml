@@ -6,7 +6,8 @@
         xmlns:editor="clr-namespace:RoslynPad.Editor;assembly=RoslynPad.Editor.Windows"
         mc:Ignorable="d"
         Title="TableTweaker"
-        FontSize="12">
+        FontSize="12"
+        WindowState="Maximized">
 
 
     <FrameworkElement.InputBindings>
