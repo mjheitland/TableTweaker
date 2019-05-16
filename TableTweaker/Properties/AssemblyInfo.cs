@@ -1,17 +1,15 @@
 ﻿using System.Reflection;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NewRoslynPadSample")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TableTweaker")]
+[assembly: AssemblyDescription("Transform any tabular text data using C# scripting")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NewRoslynPadSample")]
+[assembly: AssemblyCompany("Dr. Michael Heitland Cloud Solutions")]
+[assembly: AssemblyProduct("TableTweaker")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
